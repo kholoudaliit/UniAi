@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>MyKAU — منصة جامعة الملك عبدالعزيز الذكية</title>
+  <meta name="description" content="MyKAU — مستقبل التطبيق الجامعي الذكي لجامعة الملك عبدالعزيز" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== PHONE FRAME ===== -->
+<div class="phone-frame-wrapper">
+  <div class="phone-label">MyKAU — AI Future Vision POC</div>
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen" id="phoneScreen">
+
+      <!-- ===== SPLASH / LOGIN ===== -->
+      <div class="screen active" id="screen-splash">
+        <div class="splash-bg">
+          <div class="splash-orb splash-orb-1"></div>
+          <div class="splash-orb splash-orb-2"></div>
+          <div class="splash-orb splash-orb-3"></div>
+        </div>
+        <div class="splash-content">
+          <div class="kau-logo-wrap">
+            <div class="kau-logo">
+              <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+                <circle cx="26" cy="26" r="24" fill="url(#lg1)" opacity="0.15"/>
+                <circle cx="26" cy="26" r="18" fill="url(#lg1)" opacity="0.25"/>
+                <path d="M14 26L21 18L26 28L32 14L38 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="26" cy="26" r="4" fill="white" opacity="0.9"/>
+                <defs>
+                  <linearGradient id="lg1" x1="0" y1="0" x2="52" y2="52">
+                    <stop offset="0%" stop-color="#00D4FF"/>
+                    <stop offset="100%" stop-color="#7B2FFF"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <h1 class="splash-title">MyKAU</h1>
+            <p class="splash-sub">AI Future Vision</p>
+            <p class="splash-univ">جامعة الملك عبدالعزيز</p>
+          </div>
+
+          <div class="splash-services">
+            <div class="service-pill"><span>🗺️</span> KAU Lens</div>
+            <div class="service-pill"><span>💬</span> KAU Chat</div>
+            <div class="service-pill"><span>🤖</span> KAU MateAI</div>
+            <div class="service-pill"><span>✅</span> Smart Attendance</div>
+            <div class="service-pill"><span>🗳️</span> KAU Vote</div>
+            <div class="service-pill"><span>📅</span> Calendar</div>
+            <div class="service-pill"><span>🏆</span> Gamification</div>
+          </div>
+
+          <button class="splash-btn" id="splashEnterBtn">
+            <span>ابدأ التجربة</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <p class="splash-hint">نموذج أولي — Proof of Concept 2026</p>
+        </div>
+      </div>
+
+      <!-- ===== HOME / DASHBOARD ===== -->
+      <div class="screen" id="screen-home">
+        <div class="status-bar">
+          <span class="status-time" id="statusTime">9:41</span>
+          <div class="status-icons">
+            <span>📶</span><span>🔋</span>
+          </div>
+        </div>
+        <div class="screen-scroll">
+          <div class="home-header">
+            <div class="home-greeting">
+              <p class="greeting-sub">صباح الخير 👋</p>
+              <h2 class="greeting-name">سارة الأحمدي</h2>
+              <p class="greeting-meta">علم الحاسب · المستوى السادس</p>
+            </div>
+            <div class="home-avatar" id="homeAvatarBtn">س</div>
+          </div>
+
+          <!-- Points Banner -->
+          <div class="points-banner" id="pointsBannerBtn">
+            <div class="points-left">
+              <div class="points-icon">🏆</div>
+              <div>
+                <div class="points-val">2,840 نقطة</div>
+                <div class="points-label">المرتبة: نجم الجامعة ⭐</div>
+              </div>
+            </div>
+            <div class="points-progress-wrap">
+              <div class="points-progress-bar"><div class="points-progress-fill" style="width:71%"></div></div>
+              <div class="points-next">160 نقطة للمستوى التالي</div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="quick-stats">
+            <div class="qs-card" style="--a:#00D4FF">
+              <div class="qs-icon">😊</div>
+              <div class="qs-val" id="qs-happy">78%</div>
+              <div class="qs-lbl">السعادة</div>
+            </div>
+            <div class="qs-card" style="--a:#7B2FFF">
+              <div class="qs-icon">📚</div>
+              <div class="qs-val">6</div>
+              <div class="qs-lbl">مقرراتي</div>
+            </div>
+            <div class="qs-card" style="--a:#FF6B6B">
+              <div class="qs-icon">✅</div>
+              <div class="qs-val">91%</div>
+              <div class="qs-lbl">الحضور</div>
+            </div>
+            <div class="qs-card" style="--a:#FFD93D">
+              <div class="qs-icon">📅</div>
+              <div class="qs-val">3</div>
+              <div class="qs-lbl">فعاليات</div>
+            </div>
+          </div>
+
+          <!-- Services Grid -->
+          <div class="section-label">الخدمات</div>
+          <div class="services-grid">
+            <button class="svc-card" data-nav="lens" id="svcLens">
+              <div class="svc-icon-wrap" style="--c1:#00D4FF;--c2:#0099FF">
+                <span class="svc-icon">🗺️</span>
+              </div>
+              <div class="svc-name">KAU Lens</div>
+              <div class="svc-desc">الخريطة الذكية</div>
+              <span class="svc-live">مباشر</span>
+            </button>
+            <button class="svc-card" data-nav="chat" id="svcChat">
+              <div class="svc-icon-wrap" style="--c1:#7B2FFF;--c2:#5B00FF">
+                <span class="svc-icon">💬</span>
+              </div>
+              <div class="svc-name">KAU Chat</div>
+              <div class="svc-desc">التواصل والرسائل</div>
+              <span class="svc-badge">3</span>
+            </button>
+            <button class="svc-card" data-nav="mate" id="svcMate">
+              <div class="svc-icon-wrap" style="--c1:#FF6B6B;--c2:#FF3366">
+                <span class="svc-icon">🤖</span>
+              </div>
+              <div class="svc-name">KAU MateAI</div>
+              <div class="svc-desc">المساعد الذكي</div>
+            </button>
+            <button class="svc-card" data-nav="attend" id="svcAttend">
+              <div class="svc-icon-wrap" style="--c1:#00C896;--c2:#009966">
+                <span class="svc-icon">✅</span>
+              </div>
+              <div class="svc-name">Smart Attend</div>
+              <div class="svc-desc">التحضير الذاتي</div>
+            </button>
+            <button class="svc-card" data-nav="vote" id="svcVote">
+              <div class="svc-icon-wrap" style="--c1:#FFD93D;--c2:#FFA500">
+                <span class="svc-icon">🗳️</span>
+              </div>
+              <div class="svc-name">KAU Vote</div>
+              <div class="svc-desc">التصويت</div>
+              <span class="svc-badge new">جديد</span>
+            </button>
+            <button class="svc-card" data-nav="calendar" id="svcCalendar">
+              <div class="svc-icon-wrap" style="--c1:#FF9F43;--c2:#FF6B35">
+                <span class="svc-icon">📅</span>
+              </div>
+              <div class="svc-name">التقويم</div>
+              <div class="svc-desc">الذكي المتكامل</div>
+            </button>
+            <button class="svc-card wide" data-nav="gamify" id="svcGamify">
+              <div class="svc-icon-wrap" style="--c1:#FFD700;--c2:#FF8C00">
+                <span class="svc-icon">🏆</span>
+              </div>
+              <div>
+                <div class="svc-name">KAU Gamification</div>
+                <div class="svc-desc">نقاط · أوسمة · جوائز حصرية</div>
+              </div>
+            </button>
+          </div>
+
+          <!-- Today's Highlights -->
+          <div class="section-label">اليوم</div>
+          <div class="today-feed">
+            <div class="feed-item" data-nav="vote">
+              <div class="feed-icon" style="background:rgba(255,217,61,0.15)">🗳️</div>
+              <div class="feed-body">
+                <div class="feed-title">تصويت نشط: موعد اختبار CS302</div>
+                <div class="feed-meta">ينتهي خلال ٣ ساعات · شارك الآن</div>
+              </div>
+              <svg class="feed-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="#666" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="feed-item" data-nav="lens">
+              <div class="feed-icon" style="background:rgba(0,212,255,0.15)">🗺️</div>
+              <div class="feed-body">
+                <div class="feed-title">ازدحام في الكافيتيريا 🔴</div>
+                <div class="feed-meta">تنبيه ذكي · بدّل مسارك</div>
+              </div>
+              <svg class="feed-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="#666" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="feed-item" data-nav="calendar">
+              <div class="feed-icon" style="background:rgba(123,47,255,0.15)">📅</div>
+              <div class="feed-body">
+                <div class="feed-title">هاكاثون الذكاء الاصطناعي</div>
+                <div class="feed-meta">غداً ٩ص · قاعة الابتكار</div>
+              </div>
+              <svg class="feed-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="#666" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <div style="height:20px"></div>
+        </div>
+      </div>
+
+      <!-- ===== KAU LENS ===== -->
+      <div class="screen" id="screen-lens">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">
+            <span>🗺️ KAU Lens</span>
+            <span class="live-dot-label"><span class="ldot"></span>مباشر</span>
+          </div>
+          <button class="nav-action" id="lensReportBtn">📢</button>
+        </div>
+        <div class="screen-scroll no-pad">
+          <!-- Map -->
+          <div class="lens-map-area">
+            <div id="lensMap"></div>
+            <div class="map-filter-bar">
+              <button class="mfb active" data-lf="all">الكل</button>
+              <button class="mfb" data-lf="happy">😄 سعيد</button>
+              <button class="mfb" data-lf="sad">😢 متذمر</button>
+              <button class="mfb" data-lf="crowd">👥 ازدحام</button>
+            </div>
+          </div>
+
+          <!-- Mood Submit -->
+          <div class="lens-panel">
+            <div class="lens-section-title">كيف تشعر الآن؟</div>
+            <div class="location-row">
+              <select id="lensLocation" class="lens-select">
+                <option value="lib">📚 المكتبة الجامعية</option>
+                <option value="cs">💻 كلية الحاسبات</option>
+                <option value="cafe">🍽️ الكافيتيريا</option>
+                <option value="eng">⚙️ كلية الهندسة</option>
+                <option value="clinic">🏥 العيادة</option>
+                <option value="sports">⚽ الملاعب</option>
+                <option value="admin">🏢 الإدارة</option>
+                <option value="reg">📝 التسجيل</option>
+              </select>
+            </div>
+            <div class="mood-row" id="lensMoodRow">
+              <button class="mood-btn" data-m="5">😄</button>
+              <button class="mood-btn" data-m="4">🙂</button>
+              <button class="mood-btn" data-m="3">😐</button>
+              <button class="mood-btn" data-m="2">😕</button>
+              <button class="mood-btn" data-m="1">😢</button>
+            </div>
+            <textarea class="lens-textarea" id="lensComment" placeholder="أضف تعليقاً أو مقترحاً (اختياري)..." rows="2"></textarea>
+            <div class="lens-action-row">
+              <button class="action-chip" id="lensPhotoBtn">📷 صورة</button>
+              <button class="action-chip" id="lensReportChipBtn">📢 إبلاغ</button>
+              <button class="btn-submit" id="lensSendBtn">إرسال 💫</button>
+            </div>
+
+            <!-- Heatmap Stats -->
+            <div class="lens-section-title" style="margin-top:16px">📊 مناطق الجامعة</div>
+            <div class="hmap-bars" id="hmapBars"></div>
+
+            <!-- Recent -->
+            <div class="lens-section-title" style="margin-top:16px">💬 آخر التعليقات</div>
+            <div class="lens-feed" id="lensFeed"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== KAU CHAT ===== -->
+      <div class="screen" id="screen-chat">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">💬 KAU Chat</div>
+          <button class="nav-action" id="chatNewBtn">✏️</button>
+        </div>
+
+        <!-- Chat List -->
+        <div class="screen-scroll" id="chatListView">
+          <div class="chat-tabs">
+            <button class="ctab active" data-ct="courses">مجموعات المواد</button>
+            <button class="ctab" data-ct="interests">الاهتمامات</button>
+            <button class="ctab" data-ct="direct">المحادثات</button>
+          </div>
+          <div class="chat-search-wrap">
+            <input type="text" class="chat-search" placeholder="🔍 ابحث..." id="chatSearch"/>
+          </div>
+          <div class="chat-rooms-list" id="chatRoomsList"></div>
+        </div>
+
+        <!-- Chat Window -->
+        <div class="chat-window-view hidden" id="chatWindowView">
+          <div class="nav-bar">
+            <button class="back-btn" id="chatBackToList">‹</button>
+            <div class="chat-win-header" id="chatWinHeader">
+              <div class="chat-win-icon" id="chatWinIcon">💻</div>
+              <div>
+                <div class="chat-win-name" id="chatWinName">—</div>
+                <div class="chat-win-meta" id="chatWinMeta">—</div>
+              </div>
+            </div>
+            <button class="nav-action" id="chatMenuBtn">⋮</button>
+          </div>
+          <div id="chatPinnedContainer"></div>
+          <div class="chat-msgs" id="chatMsgs"></div>
+          <div class="chat-bar">
+            <button class="chat-plus">+</button>
+            <input class="chat-input" id="chatInput" placeholder="اكتب رسالة..." />
+            <button class="chat-send" id="chatSendBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== KAU MateAI ===== -->
+      <div class="screen" id="screen-mate">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">🤖 KAU MateAI</div>
+          <button class="nav-action">⚙️</button>
+        </div>
+        <div class="mate-intro-bar">
+          <div class="mate-modes">
+            <button class="mmode active" data-mode="support">🛠️ دعم فني</button>
+            <button class="mmode" data-mode="academic">📚 مرشد أكاديمي</button>
+            <button class="mmode" data-mode="career">💼 مسار وظيفي</button>
+          </div>
+        </div>
+        <div class="mate-msgs" id="mateMsgs"></div>
+        <div class="mate-chips" id="mateChips"></div>
+        <div class="chat-bar">
+          <button class="chat-plus">🎤</button>
+          <input class="chat-input" id="mateInput" placeholder="اسألني أي شيء..." />
+          <button class="chat-send" id="mateSendBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== SMART ATTENDANCE ===== -->
+      <div class="screen" id="screen-attend">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">✅ Smart Attendance</div>
+          <button class="nav-action" id="attendStatsBtn">📊</button>
+        </div>
+        <div class="screen-scroll">
+          <div class="attend-role-tabs">
+            <button class="arole active" data-role="student">طالب</button>
+            <button class="arole" data-role="prof">دكتور</button>
+          </div>
+
+          <!-- Student View -->
+          <div id="attendStudentView">
+            <div class="today-lec-label">محاضراتك اليوم</div>
+            <div class="lectures-list" id="lecturesList"></div>
+
+            <!-- QR Scanner -->
+            <div class="scan-card" id="scanCard">
+              <div class="scan-pulse-ring"></div>
+              <div class="scan-inner">
+                <div class="scan-icon">📷</div>
+                <div class="scan-title">امسح الباركود</div>
+                <div class="scan-sub">في انتظار تفعيل الدكتور...</div>
+              </div>
+            </div>
+            <button class="btn-submit" id="mockScanBtn" style="margin:0 16px;width:calc(100% - 32px)">
+              🔍 محاكاة مسح QR Code
+            </button>
+          </div>
+
+          <!-- Prof View -->
+          <div id="attendProfView" class="hidden">
+            <div class="prof-attend-card">
+              <div class="prof-course-select">
+                <label>اختر المقرر</label>
+                <select id="profCourseSelect">
+                  <option>CS302 — الخوارزميات</option>
+                  <option>CS401 — قواعد البيانات</option>
+                  <option>CS450 — الذكاء الاصطناعي</option>
+                </select>
+              </div>
+              <button class="btn-submit" id="genQrBtn">🔑 توليد QR Code للمحاضرة</button>
+            </div>
+            <div class="qr-display hidden" id="qrDisplay">
+              <div class="qr-box">
+                <div class="qr-grid" id="qrGrid"></div>
+                <div class="qr-code-label">CS302 — الخوارزميات</div>
+                <div class="qr-timer" id="qrTimer">⏱️ ينتهي خلال: 05:00</div>
+              </div>
+              <div class="attend-stats-row">
+                <div class="ast-card"><div class="ast-val" id="presentCount">23</div><div class="ast-lbl">حضر</div></div>
+                <div class="ast-card"><div class="ast-val" id="absentCount">5</div><div class="ast-lbl">غائب</div></div>
+                <div class="ast-card"><div class="ast-val">82%</div><div class="ast-lbl">نسبة</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:20px"></div>
+        </div>
+      </div>
+
+      <!-- ===== KAU VOTE ===== -->
+      <div class="screen" id="screen-vote">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">🗳️ KAU Vote</div>
+          <button class="nav-action" id="createVoteBtn">+</button>
+        </div>
+        <div class="screen-scroll">
+          <div class="vote-filter-bar">
+            <button class="vfb active" data-vf="all">الكل</button>
+            <button class="vfb" data-vf="active">🟢 نشط</button>
+            <button class="vfb" data-vf="survey">📊 استطلاع</button>
+            <button class="vfb" data-vf="election">🏅 انتخاب</button>
+            <button class="vfb" data-vf="quiz">📝 كويز</button>
+          </div>
+          <div class="polls-feed" id="pollsFeed"></div>
+          <div style="height:20px"></div>
+        </div>
+
+        <!-- Create Vote Sheet -->
+        <div class="bottom-sheet hidden" id="createVoteSheet">
+          <div class="bs-handle"></div>
+          <div class="bs-title">إنشاء تصويت جديد</div>
+          <div class="bs-form">
+            <div class="form-group">
+              <label>نوع التصويت</label>
+              <div class="vote-type-row">
+                <button class="vtb active" data-vt="survey">📊 استطلاع</button>
+                <button class="vtb" data-vt="election">🏅 انتخاب</button>
+                <button class="vtb" data-vt="quiz">📝 كويز</button>
+                <button class="vtb" data-vt="schedule">📅 موعد</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>السؤال</label>
+              <input type="text" id="voteQuestion" placeholder="اكتب سؤالك هنا..." />
+            </div>
+            <div class="form-group">
+              <label>الخيارات</label>
+              <div id="voteOptions">
+                <input type="text" class="vote-opt-input" placeholder="الخيار الأول" />
+                <input type="text" class="vote-opt-input" placeholder="الخيار الثاني" />
+              </div>
+              <button class="btn-ghost-sm" id="addVoteOpt">+ خيار</button>
+            </div>
+            <div class="form-group">
+              <label>المستهدفون</label>
+              <select id="voteTarget">
+                <option>جميع الطلاب</option>
+                <option>CS302 — خوارزميات</option>
+                <option>كلية الحاسبات</option>
+                <option>المستوى الرابع والأعلى</option>
+              </select>
+            </div>
+            <button class="btn-submit" id="publishVoteBtn">🚀 نشر التصويت</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CALENDAR ===== -->
+      <div class="screen" id="screen-calendar">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">📅 التقويم الذكي</div>
+          <button class="nav-action" id="addEventBtn">+</button>
+        </div>
+        <div class="screen-scroll">
+          <!-- View Toggle -->
+          <div class="cal-view-toggle">
+            <button class="cvt-btn active" id="btnViewStrip">أسبوعي</button>
+            <button class="cvt-btn" id="btnViewMonth">شهري</button>
+          </div>
+
+          <!-- Calendar Area -->
+          <div class="cal-strip">
+            <div class="cal-strip-nav">
+              <button id="calPrev">‹</button>
+              <span id="calMonthLabel">أبريل ٢٠٢٦</span>
+              <button id="calNext">›</button>
+            </div>
+            <div class="cal-days-row" id="calDaysRow"></div>
+            <div class="cal-month-grid hidden" id="calMonthGrid"></div>
+          </div>
+
+          <!-- Filter chips -->
+          <div class="cal-chips">
+            <button class="cal-chip active" data-cf="all">الكل</button>
+            <button class="cal-chip" data-cf="academic">🎓 أكاديمي</button>
+            <button class="cal-chip" data-cf="exam">📝 اختبار</button>
+            <button class="cal-chip" data-cf="social">🎉 اجتماعي</button>
+            <button class="cal-chip" data-cf="sports">⚽ رياضي</button>
+          </div>
+
+          <!-- Events list -->
+          <div class="section-label">الفعاليات القادمة</div>
+          <div class="events-list" id="eventsList"></div>
+
+          <div style="height:20px"></div>
+        </div>
+
+        <!-- Add Event Sheet -->
+        <div class="bottom-sheet hidden" id="addEventSheet">
+          <div class="bs-handle"></div>
+          <div class="bs-title">إضافة فعالية</div>
+          <div class="bs-form">
+            <div class="form-group">
+              <label>اسم الفعالية</label>
+              <input type="text" id="evtName" placeholder="مثال: محاضرة ضيف متميز" />
+            </div>
+            <div class="form-group">
+              <label>النوع</label>
+              <select id="evtType">
+                <option value="academic">🎓 أكاديمي</option>
+                <option value="exam">📝 اختبار</option>
+                <option value="social">🎉 اجتماعي</option>
+                <option value="sports">⚽ رياضي</option>
+              </select>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group"><label>التاريخ</label><input type="date" id="evtDate"/></div>
+              <div class="form-group"><label>الوقت</label><input type="time" id="evtTime"/></div>
+            </div>
+            <div class="form-group">
+              <label>المكان</label>
+              <input type="text" id="evtLoc" placeholder="قاعة ٢٠١" />
+            </div>
+            <button class="btn-submit" id="saveEvtBtn">💾 حفظ الفعالية</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== GAMIFICATION ===== -->
+      <div class="screen" id="screen-gamify">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">🏆 KAU Gamification</div>
+          <button class="nav-action">🔗</button>
+        </div>
+        <div class="screen-scroll">
+          <!-- Profile Hero -->
+          <div class="gamify-hero">
+            <div class="gh-avatar">س</div>
+            <div class="gh-name">سارة الأحمدي</div>
+            <div class="gh-title">⭐ نجم الجامعة</div>
+            <div class="gh-points">2,840</div>
+            <div class="gh-pts-lbl">نقطة</div>
+            <div class="gh-bar-wrap">
+              <div class="gh-bar"><div class="gh-bar-fill" style="width:71%"></div></div>
+              <div class="gh-bar-labels"><span>المستوى الحالي</span><span>3000 للتالي</span></div>
+            </div>
+          </div>
+
+          <!-- Badges -->
+          <div class="section-label">الأوسمة المكتسبة</div>
+          <div class="badges-grid" id="badgesGrid"></div>
+
+          <!-- How to earn -->
+          <div class="section-label">كيف تكسب نقاطاً؟</div>
+          <div class="earn-list" id="earnList"></div>
+
+          <!-- Leaderboard -->
+          <div class="section-label">🏅 قائمة المتصدرين</div>
+          <div class="leaderboard" id="leaderboard"></div>
+
+          <!-- Rewards -->
+          <div class="section-label">🎁 الجوائز المتاحة</div>
+          <div class="rewards-list" id="rewardsList"></div>
+
+          <div style="height:20px"></div>
+        </div>
+      </div>
+
+      <!-- ===== PROFILE ===== -->
+      <div class="screen" id="screen-profile">
+        <div class="nav-bar">
+          <button class="back-btn" data-back="home">‹</button>
+          <div class="nav-title">👤 ملفي الشخصي</div>
+          <button class="nav-action">✏️</button>
+        </div>
+        <div class="screen-scroll">
+          <div class="profile-hero">
+            <div class="ph-banner"></div>
+            <div class="ph-info">
+              <div class="ph-avatar">س</div>
+              <div class="ph-name">سارة أحمد الأحمدي</div>
+              <div class="ph-major">🎓 علم الحاسب والمعلومات — المستوى السادس</div>
+              <div class="ph-stats">
+                <div class="phs-item"><strong>3.8</strong><span>المعدل</span></div>
+                <div class="phs-item"><strong>102</strong><span>ساعة</span></div>
+                <div class="phs-item"><strong>12</strong><span>وسام</span></div>
+                <div class="phs-item"><strong>6</strong><span>مشاريع</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="profile-bio-card">
+            <p>طالبة متميزة في علم الحاسب، شغوفة بالذكاء الاصطناعي وتحليل البيانات.</p>
+          </div>
+
+          <div class="section-label">التقدم الأكاديمي</div>
+          <div class="academic-prog-card">
+            <canvas id="progressChart" width="120" height="120"></canvas>
+            <div class="prog-details">
+              <div class="prog-row"><span>الساعات المنجزة</span><strong>102 / 150</strong></div>
+              <div class="prog-row"><span>المعدل التراكمي</span><strong>3.8 / 4.0</strong></div>
+              <div class="prog-row"><span>الفصول المتبقية</span><strong>~4 فصول</strong></div>
+              <div class="prog-row"><span>نسبة الإنجاز</span><strong>68%</strong></div>
+            </div>
+          </div>
+
+          <div class="section-label">المهارات التقنية</div>
+          <div class="skills-list" id="skillsList"></div>
+
+          <div style="height:20px"></div>
+        </div>
+      </div>
+
+      <!-- ===== BOTTOM NAV ===== -->
+      <nav class="bottom-nav" id="bottomNav">
+        <button class="bn-item active" data-nav="home" id="bnHome">
+          <span class="bn-icon">🏠</span>
+          <span class="bn-lbl">الرئيسية</span>
+        </button>
+        <button class="bn-item" data-nav="lens" id="bnLens">
+          <span class="bn-icon">🗺️</span>
+          <span class="bn-lbl">KAU Lens</span>
+        </button>
+        <button class="bn-item" data-nav="chat" id="bnChat">
+          <span class="bn-icon">💬</span>
+          <span class="bn-lbl">Chat</span>
+          <span class="bn-badge">3</span>
+        </button>
+        <button class="bn-item" data-nav="mate" id="bnMate">
+          <span class="bn-icon">🤖</span>
+          <span class="bn-lbl">MateAI</span>
+        </button>
+        <button class="bn-item" data-nav="vote" id="bnVote">
+          <span class="bn-icon">🗳️</span>
+          <span class="bn-lbl">Vote</span>
+        </button>
+      </nav>
+
+    </div><!-- /phone-screen -->
+  </div><!-- /phone-frame -->
+</div><!-- /phone-frame-wrapper -->
+
+<!-- Toast -->
+<div class="toast-notif" id="toastNotif"></div>
+
+<script src="app.js"></script>
+<script src="lens.js"></script>
+<script src="chat2.js"></script>
+<script src="mate.js"></script>
+<script src="attend.js"></script>
+<script src="vote2.js"></script>
+<script src="calendar2.js"></script>
+<script src="gamify.js"></script>
+
+</body>
+</html>
