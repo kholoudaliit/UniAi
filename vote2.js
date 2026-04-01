@@ -4,7 +4,7 @@ let voteInited = false;
 const pollsData = [
   { id:1, type:'survey', title:'استطلاع جودة الخدمات الجامعية', q:'كيف تقيّم جودة الخدمات في المكتبة؟', opts:[{t:'ممتازة',v:45},{t:'جيدة',v:30},{t:'مقبولة',v:15},{t:'ضعيفة',v:10}], voters:320, ends:'٣ ساعات', voted:false },
   { id:2, type:'election', title:'🏅 انتخابات نجم الجامعة ٢٠٢٦', q:'صوّت لنجم الجامعة لهذا الفصل', opts:[{t:'فهد العتيبي 🌟',v:38},{t:'نورة السلمي ⭐',v:35},{t:'عمر الغامدي 💫',v:27}], voters:890, ends:'٢ أيام', voted:false },
-  { id:3, type:'quiz', title:'كويز: الذكاء الاصطناعي', q:'ما هو نموذج الذكاء الاصطناعي الأشهر في 2025؟', opts:[{t:'GPT-4',v:60},{t:'Gemini',v:25},{t:'Claude',v:15}], voters:127, ends:'منتهي', voted:true },
+  { id:3, type:'quiz', title:'كويز: الذكاء الاصطناعي', q:'ما هو نموذج الذكاء الاصطناعي الأشهر في 2025؟', opts:[{t:'GPT-4',v:60},{t:'Gemini',v:25},{t:'Claude',v:15}], voters:127, ends:'منتهي', voted:true, userVoteIdx: 0 },
   { id:4, type:'schedule', title:'جدولة: موعد مراجعة CS302', q:'متى يناسبك موعد المراجعة؟', opts:[{t:'الثلاثاء ٢م',v:45},{t:'الأربعاء ١٠ص',v:35},{t:'الخميس ٤م',v:20}], voters:52, ends:'ساعتان', voted:false },
 ];
 
@@ -57,11 +57,12 @@ function renderPolls(filter) {
 function renderPoll(poll) {
   const total = poll.opts.reduce((a,o) => a + o.v, 0);
   const opts = poll.opts.map((o,i) => {
-    const pct = Math.round(o.v / total * 100);
+    const pct = Math.round(o.v / (total || 1) * 100);
+    const isSelected = poll.userVoteIdx === i;
     if (poll.voted) {
-      return `<div class="poll-opt" style="cursor:default">
-        <span class="poll-opt-label">${o.t}</span>
-        <div class="poll-opt-bar-wrap"><div class="poll-opt-bar" style="width:${pct}%"></div></div>
+      return `<div class="poll-opt ${isSelected ? 'user-voted' : 'voted'}" style="cursor:default">
+        <span class="poll-opt-label">${isSelected ? '✅ ' : ''}${o.t}</span>
+        <div class="poll-opt-bar-wrap"><div class="poll-opt-bar ${isSelected ? 'green-bar' : ''}" style="width:${pct}%"></div></div>
         <span class="poll-opt-pct">${pct}%</span>
       </div>`;
     }
@@ -91,6 +92,7 @@ function castVote(pollId, optIdx) {
   const poll = pollsData.find(p => p.id == pollId);
   if (!poll || poll.voted) return;
   poll.voted = true; poll.voters++;
+  poll.userVoteIdx = parseInt(optIdx);
   poll.opts[optIdx].v += 1;
   const card = document.getElementById('poll-' + pollId);
   if (card) card.outerHTML = renderPoll(poll);

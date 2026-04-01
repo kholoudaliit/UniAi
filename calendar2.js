@@ -1,5 +1,7 @@
 // ===== calendar2.js — Smart Calendar =====
 let calInited = false;
+let currentCatFilter = 'all';
+let currentDayFilter = null;
 const eventsData = [
   { day:2, month:'أبر', type:'social', title:'هاكاثون الذكاء الاصطناعي', meta:'٩ص · قاعة الابتكار', cat:'social' },
   { day:3, month:'أبر', type:'exam', title:'اختبار CS302 — الخوارزميات', meta:'١٠ص · أ-١٠٣', cat:'exam' },
@@ -14,7 +16,7 @@ function initCalendar() {
   if (calInited) return; calInited = true;
   renderCalDays();
   renderCalMonth();
-  renderEvents('all');
+  renderEvents();
 
   document.getElementById('btnViewStrip')?.addEventListener('click', (e) => toggleCalView('strip', e.target));
   document.getElementById('btnViewMonth')?.addEventListener('click', (e) => toggleCalView('month', e.target));
@@ -30,7 +32,8 @@ function initCalendar() {
     chip.addEventListener('click', () => {
       document.querySelectorAll('.cal-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-      renderEvents(chip.dataset.cf);
+      currentCatFilter = chip.dataset.cf;
+      renderEvents();
     });
   });
 }
@@ -48,9 +51,17 @@ function renderCalDays() {
     div.innerHTML = `<span class="cal-day-name">${days[(i-1) % 7]}</span>
       <span class="cal-day-num">${i}</span>
       ${hasEvent ? '<div class="cal-day-dot"></div>' : ''}`;
+    div.dataset.day = i + 1;
     div.addEventListener('click', () => {
+      const isSelected = div.classList.contains('selected');
       document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
-      div.classList.add('selected');
+      if (isSelected) {
+        currentDayFilter = null;
+      } else {
+        document.querySelectorAll(`.cal-day[data-day="${i + 1}"]`).forEach(d => d.classList.add('selected'));
+        currentDayFilter = i + 1;
+      }
+      renderEvents();
     });
     row.appendChild(div);
   }
@@ -86,9 +97,17 @@ function renderCalMonth() {
     div.className = 'cal-day' + (i === today ? ' today' : '');
     div.innerHTML = `<span class="cal-day-num">${i}</span>
       ${hasEvent ? '<div class="cal-day-dot"></div>' : ''}`;
+    div.dataset.day = i;
     div.addEventListener('click', () => {
-      document.querySelectorAll('#calMonthGrid .cal-day').forEach(d => d.classList.remove('selected'));
-      div.classList.add('selected');
+      const isSelected = div.classList.contains('selected');
+      document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+      if (isSelected) {
+        currentDayFilter = null;
+      } else {
+        document.querySelectorAll(`.cal-day[data-day="${i}"]`).forEach(d => d.classList.add('selected'));
+        currentDayFilter = i;
+      }
+      renderEvents();
     });
     grid.appendChild(div);
   }
@@ -107,10 +126,32 @@ function toggleCalView(view, btn) {
 }
 
 
-function renderEvents(filter) {
+function renderEvents() {
   const el = document.getElementById('eventsList');
+  const titleEl = document.getElementById('eventsListTitle');
   if (!el) return;
-  const evts = filter === 'all' ? eventsData : eventsData.filter(e => e.cat === filter);
+  
+  if (titleEl) {
+    if (currentDayFilter !== null) {
+      titleEl.innerText = 'فعاليات اليوم';
+    } else {
+      titleEl.innerText = 'الفعاليات القادمة';
+    }
+  }
+
+  let evts = eventsData;
+  if (currentCatFilter !== 'all') {
+    evts = evts.filter(e => e.cat === currentCatFilter);
+  }
+  if (currentDayFilter !== null) {
+    evts = evts.filter(e => e.day === currentDayFilter);
+  }
+  
+  if (evts.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--txt3);padding:20px 0;font-size:0.85rem">لا توجد فعاليات مسجلة في هذا اليوم</div>';
+    return;
+  }
+
   el.innerHTML = evts.map(e => `
     <div class="evt-item">
       <div class="evt-date">

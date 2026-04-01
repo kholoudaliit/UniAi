@@ -35,9 +35,24 @@ function initLens() {
   initMoodButtons();
 
   document.getElementById('lensSendBtn')?.addEventListener('click', submitLensMood);
-  document.getElementById('lensReportBtn')?.addEventListener('click', () => showToast('📢 سيتم إرسال بلاغك للإدارة'));
-  document.getElementById('lensReportChipBtn')?.addEventListener('click', () => showToast('📢 شكراً! تم إرسال البلاغ'));
   document.getElementById('lensPhotoBtn')?.addEventListener('click', () => showToast('📷 ميزة الصور قادمة قريباً!'));
+  
+  // Data Bottom Sheet Toggles
+  const dataSheet = document.getElementById('lensDataSheet');
+  const toggleSheet = () => {
+    if(dataSheet) {
+      dataSheet.classList.toggle('expanded');
+    }
+  };
+  
+  document.getElementById('lensDataSheetHandle')?.addEventListener('click', toggleSheet);
+  
+  // Also expand when tapping the top visible area
+  document.querySelector('.lens-data-sheet .location-row')?.addEventListener('click', () => {
+    if (dataSheet && !dataSheet.classList.contains('expanded')) {
+      dataSheet.classList.add('expanded');
+    }
+  });
 
   // Map filter buttons
   document.querySelectorAll('.mfb').forEach(btn => {
@@ -53,7 +68,19 @@ function initLens() {
     if (typeof L === 'undefined') return;
     if (lensMap) { lensMap.invalidateSize(); return; }
     lensMap = L.map('lensMap', { zoomControl: false, attributionControl: false }).setView([21.499, 39.250], 15);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(lensMap);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(lensMap);
+    
+    // Auto heatmap layer
+    if (typeof L.heatLayer !== 'undefined') {
+      const heatPoints = lensAreas.map(a => [a.lat, a.lng, a.score * 15]);
+      L.heatLayer(heatPoints, {
+        radius: 40,
+        blur: 25,
+        maxZoom: 17,
+        gradient: {0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red'}
+      }).addTo(lensMap);
+    }
+
     lensAreas.forEach(area => addLensMarker(area));
   }, 150);
 }
@@ -73,7 +100,10 @@ function addLensMarker(area) {
   const popup = `<div class="lmap-popup">
     <div class="lmap-popup-title">${area.emoji} ${area.name}</div>
     <div class="lmap-popup-score">${face} ${area.score}% سعادة · ازدحام: ${area.crowd}</div>
-    <button class="lmap-popup-btn" onclick="window.showToast('📍 ${area.name}: ${area.count} تفاعل اليوم')">عرض التفاصيل</button>
+    <div style="display:flex; gap:6px; margin-top:10px;">
+      <button class="lmap-popup-btn" style="margin-top:0; flex:1;" onclick="window.showToast('📍 ${area.name}: ${area.count} تفاعل اليوم')">التفاصيل</button>
+      <button class="lmap-popup-btn" style="margin-top:0; flex:1; background:rgba(255,71,87,0.15); border-color:rgba(255,71,87,0.3); color:var(--red);" onclick="window.showToast('📢 جاري فتح نموذج البلاغ في ${area.name}')">إبلاغ هنا</button>
+    </div>
   </div>`;
   marker.bindPopup(popup, { maxWidth: 200 });
 }
