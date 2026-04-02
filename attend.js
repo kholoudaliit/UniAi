@@ -12,7 +12,16 @@ function initAttend() {
   renderLectures();
 
   const screen = document.getElementById('screen-attend');
-  if (screen) screen.classList.add('mode-student');
+  const studentView = document.getElementById('attendStudentView');
+  const profView = document.getElementById('attendProfView');
+
+  // Hard reset visibility
+  if (screen) {
+    screen.classList.remove('mode-prof');
+    screen.classList.add('mode-student');
+  }
+  if (studentView) studentView.classList.remove('hidden');
+  if (profView) profView.classList.add('hidden');
 
   document.querySelectorAll('.arole').forEach(btn => {
     btn.addEventListener('click', () => {
