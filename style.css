@@ -141,28 +141,29 @@ input, select, textarea { font-family: var(--fn-ar); }
 /* ===== Splash ===== */
 #screen-splash {
   display: flex; align-items: center; justify-content: center;
-  background: var(--bg); position: relative; overflow: hidden;
+  background: #FFFFFF; position: relative; overflow: hidden;
 }
-.splash-bg { position: absolute; inset: 0; }
+.splash-bg { position: absolute; inset: 0; background: #FFFFFF; }
 .splash-orb {
   position: absolute; border-radius: 50%;
-  filter: blur(60px); animation: orbFloat 6s ease-in-out infinite;
+  filter: blur(80px); animation: orbFloat 6s ease-in-out infinite;
 }
-.splash-orb-1 { width: 200px; height: 200px; background: rgba(123,47,255,0.3); top: -50px; right: -50px; }
-.splash-orb-2 { width: 150px; height: 150px; background: rgba(0,212,255,0.25); bottom: 100px; left: -30px; animation-delay: 2s; }
-.splash-orb-3 { width: 120px; height: 120px; background: rgba(255,107,107,0.2); bottom: -30px; right: 50px; animation-delay: 4s; }
-@keyframes orbFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
-.splash-content { position: relative; z-index: 1; text-align: center; padding: 24px; }
-.kau-logo-wrap { margin-bottom: 32px; }
-.kau-logo { width: 80px; height: 80px; background: linear-gradient(135deg,rgba(0,212,255,0.2),rgba(123,47,255,0.2)); border-radius: 24px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-.splash-title { font-size: 2.2rem; font-weight: 800; font-family: var(--fn-en); background: linear-gradient(135deg,#00D4FF,#7B2FFF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.splash-sub { font-size: 0.85rem; color: var(--c1); font-family: var(--fn-en); letter-spacing: 0.1em; margin: 4px 0; }
-.splash-univ { font-size: 0.9rem; color: var(--txt2); margin-top: 4px; }
-.splash-services { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 24px 0; }
-.service-pill { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border2); padding: 6px 12px; border-radius: 20px; font-size: 0.78rem; color: var(--txt2); }
-.splash-btn { display: flex; align-items: center; gap: 10px; justify-content: center; width: 100%; padding: 16px; background: linear-gradient(135deg,#7B2FFF,#00D4FF); border: none; border-radius: var(--r); color: white; font-size: 1rem; font-weight: 700; margin-bottom: 12px; box-shadow: 0 8px 32px rgba(123,47,255,0.5); transition: all 0.2s; }
-.splash-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(123,47,255,0.6); }
-.splash-hint { font-size: 0.75rem; color: var(--txt3); font-family: var(--fn-en); }
+.splash-orb-1 { width: 250px; height: 250px; background: rgba(74, 0, 224, 0.15); top: -80px; right: -80px; }
+.splash-orb-2 { width: 200px; height: 200px; background: rgba(142, 45, 226, 0.15); bottom: 120px; left: -50px; animation-delay: 2s; }
+.splash-orb-3 { width: 150px; height: 150px; background: rgba(187, 107, 255, 0.2); bottom: -40px; right: 40px; animation-delay: 4s; }
+@keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)} }
+.splash-content { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 1; text-align: center; padding: 24px; width: 100%; height: 100%; gap: 10px; padding-top: 40px; }
+.kau-logo-wrap { margin-bottom: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+.kau-custom-logo { width: 100px; height: 100px; object-fit: contain; margin-bottom: 16px; filter: drop-shadow(0 10px 20px rgba(74,0,224,0.15)); transition: transform 0.3s ease; }
+.splash-title { font-size: 2.6rem; font-weight: 800; font-family: var(--fn-en); background: linear-gradient(135deg, #4A00E0, #8E2DE2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em; margin-bottom: 4px; }
+.splash-sub { font-size: 0.95rem; color: #8E2DE2; font-family: var(--fn-en); letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; margin: 4px 0; }
+.splash-univ { font-size: 1rem; color: var(--txt2); font-weight: 500; margin-top: 6px; }
+.splash-services { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 32px 0; }
+.service-pill { display: flex; align-items: center; gap: 6px; background: #FFFFFF; border: 1px solid rgba(142,45,226,0.15); box-shadow: 0 4px 12px rgba(142, 45, 226, 0.04); padding: 8px 14px; border-radius: 24px; font-size: 0.8rem; color: var(--txt); font-weight: 500; transition: all 0.2s; }
+.service-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(142, 45, 226, 0.08); border-color: rgba(142,45,226,0.3); }
+.splash-btn { display: flex; align-items: center; gap: 10px; justify-content: center; width: 100%; padding: 18px; background: linear-gradient(135deg, #4A00E0, #8E2DE2); border: none; border-radius: 20px; color: white; font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; box-shadow: 0 12px 32px rgba(74, 0, 224, 0.35); transition: all 0.3s; }
+.splash-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(74, 0, 224, 0.5); }
+.splash-hint { font-size: 0.8rem; color: var(--txt3); font-family: var(--fn-en); letter-spacing: 0.02em; }
 
 /* ===== Home ===== */
 .home-header { display: flex; align-items: center; justify-content: space-between; padding: 52px 0 16px; }
@@ -508,7 +509,11 @@ input, select, textarea { font-family: var(--fn-ar); }
 .e-needle { width: 2px; height: 8px; border-radius: 1px; margin-top: 1px; }
 
 @media (max-width: 440px) {
-  .phone-frame { width: 100vw; height: 100vh; border-radius: 0; border: none; }
-  .phone-frame-wrapper { padding: 0; min-height: 100vh; justify-content: flex-start; background: var(--bg); }
+  html, body { overflow: hidden; height: 100dvh; }
+  .phone-frame { width: 100%; height: 100dvh; border-radius: 0; border: none; box-shadow: none; }
+  .phone-frame-wrapper { padding: 0; height: 100dvh; justify-content: flex-start; background: var(--bg); overflow: hidden; }
   .phone-label { display: none; }
+  .phone-notch { display: none; }
+  .phone-screen { border-radius: 0; height: 100dvh; }
+  .screen { height: 100dvh; }
 }
