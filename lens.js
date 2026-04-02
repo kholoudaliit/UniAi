@@ -37,22 +37,17 @@ function initLens() {
   document.getElementById('lensSendBtn')?.addEventListener('click', submitLensMood);
   document.getElementById('lensPhotoBtn')?.addEventListener('click', () => showToast('📷 ميزة الصور قادمة قريباً!'));
   
-  // Data Bottom Sheet Toggles
+  // Initialize Draggable Sheet
   const dataSheet = document.getElementById('lensDataSheet');
-  const toggleSheet = () => {
-    if(dataSheet) {
-      dataSheet.classList.toggle('expanded');
-    }
-  };
-  
-  document.getElementById('lensDataSheetHandle')?.addEventListener('click', toggleSheet);
-  
-  // Also expand when tapping the top visible area
-  document.querySelector('.lens-data-sheet .location-row')?.addEventListener('click', () => {
-    if (dataSheet && !dataSheet.classList.contains('expanded')) {
+  if (dataSheet) {
+    initDraggableSheet('lensDataSheet', 'lensDataSheetHandle', { type: 'lens', threshold: -50 });
+    
+    // Also expand when tapping the top visible area (optional but helpful)
+    document.querySelector('.lens-data-sheet .location-row')?.addEventListener('click', () => {
       dataSheet.classList.add('expanded');
-    }
-  });
+      document.getElementById('sheetBackdrop')?.classList.add('show');
+    });
+  }
 
   // Map filter buttons
   document.querySelectorAll('.mfb').forEach(btn => {

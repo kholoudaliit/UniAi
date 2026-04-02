@@ -47,8 +47,8 @@
               <div class="service-pill"><span>💬</span> KAU Chat</div>
               <div class="service-pill"><span>🤖</span> KAU MateAI</div>
               <div class="service-pill"><span>✅</span> Smart Attendance</div>
-              <div class="service-pill"><span>🗳️</span> KAU Vote</div>
-              <div class="service-pill"><span>📅</span> Calendar</div>
+              <div class="service-pill"><span>📢</span> KAU Voice</div>
+              <div class="service-pill"><span>📅</span> KAU Calendar</div>
               <div class="service-pill"><span>🏆</span> Gamification</div>
             </div>
 
@@ -156,27 +156,32 @@
               </button>
               <button class="svc-card" data-nav="vote" id="svcVote">
                 <div class="svc-icon-wrap" style="--c1:#FFD93D;--c2:#FFA500">
-                  <span class="svc-icon">🗳️</span>
+                  <span class="svc-icon">📢</span>
                 </div>
-                <div class="svc-name">KAU Vote</div>
-                <div class="svc-desc">التصويت</div>
+                <div class="svc-name">KAU Voice</div>
+                <div class="svc-desc">استطلاعات الجامعة</div>
                 <span class="svc-badge new">جديد</span>
               </button>
               <button class="svc-card" data-nav="calendar" id="svcCalendar">
                 <div class="svc-icon-wrap" style="--c1:#FF9F43;--c2:#FF6B35">
                   <span class="svc-icon">📅</span>
                 </div>
-                <div class="svc-name">التقويم</div>
-                <div class="svc-desc">الذكي المتكامل</div>
+                <div class="svc-name">KAU Calendar</div>
+                <div class="svc-desc">الجدول الدراسي والفعاليات</div>
               </button>
-              <button class="svc-card wide" data-nav="gamify" id="svcGamify">
+              <button class="svc-card" data-nav="gamify" id="svcGamify">
                 <div class="svc-icon-wrap" style="--c1:#FFD700;--c2:#FF8C00">
                   <span class="svc-icon">🏆</span>
                 </div>
-                <div>
-                  <div class="svc-name">KAU Gamification</div>
-                  <div class="svc-desc">نقاط · أوسمة · جوائز حصرية</div>
+                <div class="svc-name">KAU Gamification</div>
+                <div class="svc-desc">نقاط · أوسمة · جوائز</div>
+              </button>
+              <button class="svc-card" data-nav="talent" id="svcTalent">
+                <div class="svc-icon-wrap" style="--c1:#00C896;--c2:#00D4FF">
+                  <span class="svc-icon">💼</span>
                 </div>
+                <div class="svc-name">TalentHub</div>
+                <div class="svc-desc">فرص ومهن</div>
               </button>
             </div>
 
@@ -184,9 +189,9 @@
             <div class="section-label">اليوم</div>
             <div class="today-feed">
               <div class="feed-item" data-nav="vote">
-                <div class="feed-icon" style="background:rgba(255,217,61,0.15)">🗳️</div>
+                <div class="feed-icon" style="background:rgba(255,217,61,0.15)">📢</div>
                 <div class="feed-body">
-                  <div class="feed-title">تصويت نشط: موعد اختبار CS302</div>
+                  <div class="feed-title">شاركنا رأيك: موعد اختبار CS302</div>
                   <div class="feed-meta">ينتهي خلال ٣ ساعات · شارك الآن</div>
                 </div>
                 <svg class="feed-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -242,7 +247,9 @@
 
             <!-- Data Bottom Sheet (Partially Visible) -->
             <div class="lens-data-sheet" id="lensDataSheet">
-              <div class="bs-handle" id="lensDataSheetHandle" style="cursor: pointer; padding-bottom: 6px;"></div>
+              <div class="bs-handle-area" id="lensDataSheetHandle">
+                <div class="bs-handle"></div>
+              </div>
               <div class="lens-ds-scroll">
                 <div class="lens-panel" style="padding: 0;">
                   <div class="location-row" style="margin-bottom: 16px;">
@@ -366,7 +373,13 @@
           <div class="nav-bar">
             <button class="back-btn" data-back="home">‹</button>
             <div class="nav-title">تحضيري</div>
-            <button class="nav-action" id="attendStatsBtn">📊</button>
+            <button class="nav-action" id="attendStatsBtn" title="سجل الحضور">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 8v4l3 3" />
+                <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+              </svg>
+            </button>
           </div>
           <div class="screen-scroll">
             <div class="attend-role-tabs">
@@ -391,7 +404,7 @@
               <button class="btn-submit" id="mockScanBtn" style="margin:0 16px;width:calc(100% - 32px)">
                 🔍 محاكاة مسح QR Code
               </button>
-              
+
               <!-- Student Status Summary -->
               <div class="student-status-summary">
                 <div class="status-summary-card">
@@ -400,15 +413,18 @@
                     <div class="ssc-val">88%</div>
                   </div>
                   <div class="ssc-bar-wrap">
-                    <div class="ssc-bar"><div class="ssc-bar-fill" style="width:88%"></div></div>
+                    <div class="ssc-bar">
+                      <div class="ssc-bar-fill" style="width:88%"></div>
+                    </div>
                   </div>
                 </div>
-                
+
                 <div class="dn-warning-card">
                   <div class="dwc-icon">⚠️</div>
                   <div class="dwc-body">
                     <div class="dwc-title">تنبيه: حرمان وشيك (DN)</div>
-                    <div class="dwc-text">في مادة <strong>CS302 — الخوارزميات</strong>. نسبة الغياب: 18% (متبقي محاضرة واحدة للحرمان).</div>
+                    <div class="dwc-text">في مادة <strong>CS302 — الخوارزميات</strong>. نسبة الغياب: 18% (متبقي محاضرة
+                      واحدة للحرمان).</div>
                   </div>
                 </div>
               </div>
@@ -424,7 +440,7 @@
                   <option>CS450 — الذكاء الاصطناعي</option>
                 </select>
               </div>
-              
+
               <div class="qr-display" id="qrDisplay">
                 <div class="qr-box">
                   <div class="qr-grid" id="qrGrid"></div>
@@ -452,11 +468,55 @@
           </div>
         </div>
 
+        <!-- ===== ATTENDANCE HISTORY SCREEN ===== -->
+        <div class="screen" id="screen-attend-history">
+          <div class="nav-bar">
+            <button class="back-btn" id="historyBackBtn">‹</button>
+            <div class="nav-title">سجل الحضور</div>
+          </div>
+          <div class="screen-scroll">
+            <div id="historyCourseListView">
+              <div class="section-label">اختر المادة لعرض التفاصيل</div>
+              <div class="history-course-list" id="historyCourseList">
+                <!-- Courses injected here -->
+              </div>
+            </div>
+
+            <div id="historyCourseDetailView" class="hidden">
+              <div class="history-detail-header">
+                <button class="btn-ghost-sm" id="detailBackToCourses" style="margin-top:0">‹ العودة للمواد</button>
+                <h3 id="historyCourseDetailTitle" style="margin-top:12px; font-size:1.1rem; color:var(--txt)">—</h3>
+              </div>
+
+              <div class="history-stats-grid">
+                <div class="h-stat-card">
+                  <div class="h-stat-val" id="h-stat-attended">0</div>
+                  <div class="h-stat-lbl">حضور</div>
+                </div>
+                <div class="h-stat-card">
+                  <div class="h-stat-val" id="h-stat-absent" style="color:var(--red)">0</div>
+                  <div class="h-stat-lbl">غياب</div>
+                </div>
+                <div class="h-stat-card">
+                  <div class="h-stat-val" id="h-stat-percent">0%</div>
+                  <div class="h-stat-lbl">النسبة</div>
+                </div>
+              </div>
+
+              <div class="section-label">سجل المحاضرات</div>
+              <div class="history-logs-list" id="historyLogsList">
+                <!-- Logs injected here -->
+              </div>
+            </div>
+            <div style="height:20px"></div>
+          </div>
+        </div>
+
         <!-- ===== KAU VOTE ===== -->
         <div class="screen" id="screen-vote">
           <div class="nav-bar">
             <button class="back-btn" data-back="home">‹</button>
-            <div class="nav-title">🗳️ KAU Vote</div>
+            <div class="nav-title">📢 KAU Voice</div>
             <button class="nav-action" id="createVoteBtn">+</button>
           </div>
           <div class="screen-scroll">
@@ -473,8 +533,10 @@
 
           <!-- Create Vote Sheet -->
           <div class="bottom-sheet hidden" id="createVoteSheet">
-            <div class="bs-handle"></div>
-            <div class="bs-title">إنشاء تصويت جديد</div>
+            <div class="bs-handle-area">
+              <div class="bs-handle"></div>
+            </div>
+            <div class="bs-title">شاركنا بصوتك</div>
             <div class="bs-form">
               <div class="form-group">
                 <label>نوع التصويت</label>
@@ -506,7 +568,7 @@
                   <option>المستوى الرابع والأعلى</option>
                 </select>
               </div>
-              <button class="btn-submit" id="publishVoteBtn">🚀 نشر التصويت</button>
+              <button class="btn-submit" id="publishVoteBtn">🚀 انشر صوتك الآن</button>
             </div>
           </div>
         </div>
@@ -515,7 +577,7 @@
         <div class="screen" id="screen-calendar">
           <div class="nav-bar">
             <button class="back-btn" data-back="home">‹</button>
-            <div class="nav-title">📅 التقويم الذكي</div>
+            <div class="nav-title">📅 KAU Calendar</div>
             <button class="nav-action" id="addEventBtn">+</button>
           </div>
           <div class="screen-scroll">
@@ -554,7 +616,9 @@
 
           <!-- Add Event Sheet -->
           <div class="bottom-sheet hidden" id="addEventSheet">
-            <div class="bs-handle"></div>
+            <div class="bs-handle-area">
+              <div class="bs-handle"></div>
+            </div>
             <div class="bs-title">إضافة فعالية</div>
             <div class="bs-form">
               <div class="form-group">
@@ -626,6 +690,42 @@
           </div>
         </div>
 
+        <!-- ===== KAU TalentHub ===== -->
+        <div class="screen" id="screen-talent">
+          <div class="nav-bar">
+            <button class="back-btn" data-back="home">‹</button>
+            <div class="nav-title">💼 KAU TalentHub</div>
+          </div>
+          <div class="screen-scroll">
+            <div class="talent-filter-bar">
+              <button class="tfb active" data-tf="all">الكل</button>
+              <button class="tfb" data-tf="paid">✨ بمقابل مادي</button>
+              <button class="tfb" data-tf="part">⏱️ جزئي</button>
+              <button class="tfb" data-tf="volt">🤝 تطوع</button>
+            </div>
+
+            <div class="talent-list" id="talentList">
+              <!-- Opportunities will be injected here -->
+            </div>
+
+            <div style="height:20px"></div>
+          </div>
+
+          <!-- Talent Detail Modal (Bottom Sheet style) -->
+          <div class="bottom-sheet hidden" id="talentDetailSheet">
+            <div class="bs-handle-area">
+              <div class="bs-handle"></div>
+            </div>
+            <div id="talentDetailContent">
+              <!-- Details will be injected here -->
+            </div>
+            <button class="btn-submit" id="talentApplyBtn"
+              style="background: linear-gradient(135deg, #00C896, #00D4FF); border: none; box-shadow: 0 6px 20px rgba(0,200,150,0.3);">التقديم
+              للفرصة الآن 🚀</button>
+            <div style="height:20px"></div>
+          </div>
+        </div>
+
         <!-- ===== PROFILE ===== -->
         <div class="screen" id="screen-profile">
           <div class="nav-bar">
@@ -690,10 +790,13 @@
             <span class="bn-lbl">MateAI</span>
           </button>
           <button class="bn-item" data-nav="vote" id="bnVote">
-            <span class="bn-icon">🗳️</span>
-            <span class="bn-lbl">Vote</span>
+            <span class="bn-icon">📢</span>
+            <span class="bn-lbl">Voice</span>
           </button>
         </nav>
+
+        <!-- Backdrop Overlay -->
+        <div class="sheet-backdrop" id="sheetBackdrop"></div>
 
       </div><!-- /phone-screen -->
     </div><!-- /phone-frame -->
@@ -707,9 +810,10 @@
   <script src="chat2.js?v=2.1"></script>
   <script src="mate.js?v=2.1"></script>
   <script src="attend.js?v=2.1"></script>
-  <script src="vote2.js?v=2.1"></script>
+  <script src="voice.js?v=2.1"></script>
   <script src="calendar2.js?v=2.1"></script>
   <script src="gamify.js?v=2.1"></script>
+  <script src="talent.js?v=2.1"></script>
 
 </body>
 

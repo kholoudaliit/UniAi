@@ -1,4 +1,4 @@
-// ===== vote2.js — KAU Vote =====
+// ===== voice.js — KAU Voice =====
 let voteInited = false;
 
 const pollsData = [
@@ -8,7 +8,7 @@ const pollsData = [
   { id:4, type:'schedule', title:'جدولة: موعد مراجعة CS302', q:'متى يناسبك موعد المراجعة؟', opts:[{t:'الثلاثاء ٢م',v:45},{t:'الأربعاء ١٠ص',v:35},{t:'الخميس ٤م',v:20}], voters:52, ends:'ساعتان', voted:false },
 ];
 
-function initVote() {
+function initVoice() {
   if (voteInited) return; voteInited = true;
   renderPolls('all');
 
@@ -21,8 +21,9 @@ function initVote() {
   });
 
   document.getElementById('createVoteBtn')?.addEventListener('click', () => {
-    document.getElementById('createVoteSheet')?.classList.remove('hidden');
+    openSheet('createVoteSheet');
   });
+  initDraggableSheet('createVoteSheet');
   document.getElementById('publishVoteBtn')?.addEventListener('click', publishVote);
 
   document.querySelectorAll('.vtb').forEach(btn => {
@@ -83,7 +84,7 @@ function renderPoll(poll) {
     <div class="poll-opts">${opts}</div>
     <div class="poll-footer">
       <span class="poll-voters">👥 ${poll.voters} مشارك</span>
-      <button class="poll-share" onclick="showToast('🔗 تم نسخ رابط التصويت!')">مشاركة</button>
+      <button class="poll-share" onclick="showToast('🔗 تم نسخ رابط المشاركة!')">مشاركة</button>
     </div>
   </div>`;
 }
@@ -106,7 +107,7 @@ function castVote(pollId, optIdx) {
 
 function publishVote() {
   const q = document.getElementById('voteQuestion')?.value;
-  if (!q.trim()) { showToast('⚠️ أدخل سؤال التصويت'); return; }
-  document.getElementById('createVoteSheet')?.classList.add('hidden');
-  showToast('🚀 تم نشر التصويت بنجاح! +20 نقطة');
+  if (!q.trim()) { showToast('⚠️ يرجى إدخال السؤال'); return; }
+  closeSheet('createVoteSheet');
+  showToast('🚀 تم نشر صوتك بنجاح! +20 نقطة');
 }

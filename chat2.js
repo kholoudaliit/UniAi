@@ -86,7 +86,7 @@ function openChatWindow(roomId) {
           <div style="font-family: var(--fn-ar); font-size: 0.75rem; color: var(--c2); margin-bottom: 2px;">إعلان مثبت من د. خالد الغامدي</div>
           <div style="font-family: var(--fn-ar); font-size: 0.85rem; color: var(--txt); margin-bottom: 8px;">تم تحديد موعد الاختبار النصفي يوم الخميس ٢٢ أبريل في القاعة الكبرى الساعة العاشرة صباحاً.</div>
           <button onclick="addToCalendar('الاختبار النصفي - CS302', '2026-04-22', '10:00')" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(123, 47, 255, 0.1); color: var(--c2); border: 1px solid rgba(123, 47, 255, 0.2); border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-family: var(--fn-ar); font-weight: 500;">
-            📅 إضافة للتقويم الذكي
+            📅 إضافة لـ KAU Calendar
           </button>
         </div>
       </div>
@@ -143,7 +143,7 @@ window.voteChatOpt = function(btn, idx) {
 };
 
 window.addToCalendar = function(title, date, time) {
-  showToast(`📅 تم إضافة "${title}" إلى التقويم الذكي بنجاح!`);
+  showToast(`📅 تم إضافة "${title}" إلى KAU Calendar بنجاح!`);
 };
 
 function sendChatMsg() {

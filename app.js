@@ -40,7 +40,7 @@ function goTo(screenId) {
   if (nav) nav.style.display = noNav.includes(screenId) ? 'none' : 'flex';
 
   // Init section on first visit
-  const inits = { home: initHome, lens: initLens, chat: initChat, mate: initMate, attend: initAttend, vote: initVote, calendar: initCalendar, gamify: initGamify, profile: initProfile };
+  const inits = { home: initHome, lens: initLens, chat: initChat, mate: initMate, attend: initAttend, vote: initVoice, calendar: initCalendar, gamify: initGamify, profile: initProfile, talent: initTalent };
   if (inits[screenId]) inits[screenId]();
 }
 
@@ -100,3 +100,126 @@ function animateValue(id, from, to, suffix, duration) {
   };
   tick();
 }
+
+/* ===== Draggable Sheet Logic ===== */
+window.initDraggableSheet = function(sheetId, handleId, options = {}) {
+  const sheet = document.getElementById(sheetId);
+  if (!sheet) return;
+  const handle = handleId ? document.getElementById(handleId) : sheet.querySelector('.bs-handle-area');
+  
+  if (!handle) return;
+
+  let startY, startTranslateY = 0, currentY;
+  let isDragging = false;
+  const snapThreshold = options.threshold || 100;
+  const isLens = options.type === 'lens';
+
+  const onPointerDown = (e) => {
+    isDragging = true;
+    startY = e.clientY;
+    startTranslateY = getTranslateY(sheet);
+    sheet.classList.add('dragging');
+    handle.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+    currentY = e.clientY;
+    const deltaY = currentY - startY;
+    let newTranslateY = startTranslateY + deltaY;
+
+    // Dampening at the top (don't go too far up)
+    if (newTranslateY < 0 && !isLens) {
+      newTranslateY = newTranslateY * 0.2;
+    }
+
+    sheet.style.transform = `translateY(${newTranslateY}px)`;
+  };
+
+  const onPointerUp = (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    sheet.classList.remove('dragging');
+    const finalTranslateY = getTranslateY(sheet);
+    
+    if (isLens) {
+      const backdrop = document.getElementById('sheetBackdrop');
+      if (finalTranslateY < snapThreshold) {
+        sheet.classList.add('expanded');
+        if (backdrop) backdrop.classList.add('show');
+        sheet.style.transform = '';
+      } else {
+        sheet.classList.remove('expanded');
+        if (backdrop) backdrop.classList.remove('show');
+        sheet.style.transform = '';
+      }
+    } else {
+      // Snap to fully open or close
+      if (finalTranslateY > snapThreshold) {
+        closeSheet(sheetId);
+      } else {
+        sheet.style.transform = ''; 
+      }
+    }
+  };
+
+  handle.addEventListener('pointerdown', onPointerDown);
+  handle.addEventListener('pointermove', onPointerMove);
+  handle.addEventListener('pointerup', onPointerUp);
+  handle.addEventListener('pointercancel', onPointerUp);
+};
+
+function getTranslateY(el) {
+  const style = window.getComputedStyle(el);
+  const matrix = new WebKitCSSMatrix(style.transform);
+  return matrix.m42;
+}
+
+window.openSheet = function(id) {
+  const sheet = document.getElementById(id);
+  const backdrop = document.getElementById('sheetBackdrop');
+  if (!sheet) return;
+  
+  sheet.classList.remove('hidden');
+  // Trigger reflow to ensure the initial state is applied before animation
+  void sheet.offsetWidth; 
+  
+  sheet.classList.add('animate-up');
+  if (backdrop) backdrop.classList.add('show');
+  
+  setTimeout(() => {
+    sheet.classList.remove('animate-up');
+    sheet.style.transform = 'translateY(0)';
+  }, 400);
+};
+
+window.closeSheet = function(id) {
+  const sheet = document.getElementById(id);
+  const backdrop = document.getElementById('sheetBackdrop');
+  if (!sheet) return;
+  
+  sheet.style.transform = 'translateY(100%)';
+  if (backdrop) backdrop.classList.remove('show');
+  
+  setTimeout(() => {
+    sheet.classList.add('hidden');
+    sheet.style.transform = '';
+  }, 300);
+};
+
+// Global backdrop click
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('sheetBackdrop')?.addEventListener('click', () => {
+        // Close modal bottom sheets
+        const openModalSheet = document.querySelector('.bottom-sheet:not(.hidden)');
+        if (openModalSheet) closeSheet(openModalSheet.id);
+        
+        // Minimize the lens data sheet if it was expanded
+        const lensSheet = document.getElementById('lensDataSheet');
+        const backdrop = document.getElementById('sheetBackdrop');
+        if (lensSheet && lensSheet.classList.contains('expanded')) {
+            lensSheet.classList.remove('expanded');
+            if (backdrop) backdrop.classList.remove('show');
+        }
+    });
+});

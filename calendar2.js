@@ -22,8 +22,9 @@ function initCalendar() {
   document.getElementById('btnViewMonth')?.addEventListener('click', (e) => toggleCalView('month', e.target));
 
   document.getElementById('addEventBtn')?.addEventListener('click', () => {
-    document.getElementById('addEventSheet')?.classList.remove('hidden');
+    openSheet('addEventSheet');
   });
+  initDraggableSheet('addEventSheet');
   document.getElementById('saveEvtBtn')?.addEventListener('click', saveEvent);
   document.getElementById('calPrev')?.addEventListener('click', () => showToast('◀ مارس ٢٠٢٦'));
   document.getElementById('calNext')?.addEventListener('click', () => showToast('▶ مايو ٢٠٢٦'));
@@ -173,6 +174,6 @@ function renderEvents() {
 function saveEvent() {
   const name = document.getElementById('evtName')?.value;
   if (!name?.trim()) { showToast('⚠️ أدخل اسم الفعالية'); return; }
-  document.getElementById('addEventSheet')?.classList.add('hidden');
+  closeSheet('addEventSheet');
   showToast('✅ تمت إضافة الفعالية بنجاح!');
 }

@@ -7,6 +7,45 @@ const lectures = [
   { icon: '🗄️', name: 'CS401 — قواعد البيانات', time: '١:٠٠ - ٢:٣٠ م', room: 'أ-٢٠١', status: 'upcoming' },
 ];
 
+const historyData = [
+  {
+    id: 'cs302',
+    name: 'CS302 — الخوارزميات',
+    icon: '💻',
+    stats: { attended: 12, absent: 2, percent: 86 },
+    logs: [
+      { date: 'الأربعاء ١ أبريل ٢٠٢٦', time: '٨:٠٠ ص', status: 'present' },
+      { date: 'الاثنين ٣٠ مارس ٢٠٢٦', time: '٨:٠٠ ص', status: 'absent' },
+      { date: 'الأربعاء ٢٥ مارس ٢٠٢٦', time: '٨:٠٠ ص', status: 'present' },
+      { date: 'الاثنين ٢٣ مارس ٢٠٢٦', time: '٨:٠٠ ص', status: 'present' },
+      { date: 'الأربعاء ١٨ مارس ٢٠٢٦', time: '٨:٠٠ ص', status: 'present' },
+      { date: 'الاثنين ١٦ مارس ٢٠٢٦', time: '٨:٠٠ ص', status: 'absent' },
+    ]
+  },
+  {
+    id: 'cs450',
+    name: 'CS450 — الذكاء الاصطناعي',
+    icon: '🤖',
+    stats: { attended: 14, absent: 0, percent: 100 },
+    logs: [
+      { date: 'الأحد ٢٩ مارس ٢٠٢٦', time: '١٠:٠٠ ص', status: 'present' },
+      { date: 'الثلاثاء ٢٤ مارس ٢٠٢٦', time: '١٠:٠٠ ص', status: 'present' },
+      { date: 'الأحد ٢٢ مارس ٢٠٢٦', time: '١٠:٠٠ ص', status: 'present' },
+    ]
+  },
+  {
+    id: 'cs401',
+    name: 'CS401 — قواعد البيانات',
+    icon: '🗄️',
+    stats: { attended: 10, absent: 3, percent: 77 },
+    logs: [
+      { date: 'الخميس ٢٦ مارس ٢٠٢٦', time: '١:٠٠ م', status: 'absent' },
+      { date: 'الثلاثاء ٢٤ مارس ٢٠٢٦', time: '١:٠٠ م', status: 'present' },
+      { date: 'الخميس ١٩ مارس ٢٠٢٦', time: '١:٠٠ م', status: 'absent' },
+    ]
+  }
+];
+
 function initAttend() {
   if (attendInited) return; attendInited = true;
   renderLectures();
@@ -49,7 +88,66 @@ function initAttend() {
   });
 
   document.getElementById('mockScanBtn')?.addEventListener('click', mockScan);
+  
+  document.getElementById('attendStatsBtn')?.addEventListener('click', showHistoryScreen);
+  document.getElementById('historyBackBtn')?.addEventListener('click', () => {
+    goTo('attend');
+  });
+  document.getElementById('detailBackToCourses')?.addEventListener('click', () => {
+    document.getElementById('historyCourseListView').classList.remove('hidden');
+    document.getElementById('historyCourseDetailView').classList.add('hidden');
+  });
+
+  renderHistoryCourses();
 }
+
+function showHistoryScreen() {
+  goTo('attend-history');
+  document.getElementById('historyCourseListView').classList.remove('hidden');
+  document.getElementById('historyCourseDetailView').classList.add('hidden');
+}
+
+function renderHistoryCourses() {
+  const el = document.getElementById('historyCourseList');
+  if (!el) return;
+  el.innerHTML = historyData.map(c => `
+    <div class="h-course-card" onclick="showCourseDetail('${c.id}')">
+      <div class="h-course-icon">${c.icon}</div>
+      <div class="h-course-info">
+        <div class="h-course-name">${c.name}</div>
+        <div class="h-course-meta">نسبة الحضور: ${c.stats.percent}% · غيابات: ${c.stats.absent}</div>
+      </div>
+      <div class="h-course-arrow">‹</div>
+    </div>
+  `).join('');
+}
+
+function showCourseDetail(courseId) {
+  const course = historyData.find(c => c.id === courseId);
+  if (!course) return;
+
+  document.getElementById('historyCourseListView').classList.add('hidden');
+  document.getElementById('historyCourseDetailView').classList.remove('hidden');
+
+  document.getElementById('historyCourseDetailTitle').textContent = course.name;
+  document.getElementById('h-stat-attended').textContent = course.stats.attended;
+  document.getElementById('h-stat-absent').textContent = course.stats.absent;
+  document.getElementById('h-stat-percent').textContent = course.stats.percent + '%';
+
+  const logsEl = document.getElementById('historyLogsList');
+  logsEl.innerHTML = course.logs.map(log => `
+    <div class="h-log-item">
+      <div class="h-log-date">
+        <span class="h-log-d">${log.date}</span>
+        <span class="h-log-t">🕐 ${log.time}</span>
+      </div>
+      <span class="h-log-status ${log.status}">${log.status === 'present' ? '✅ حاضر' : '❌ غائب'}</span>
+    </div>
+  `).join('');
+}
+
+// Map globally for onclick
+window.showCourseDetail = showCourseDetail;
 
 function renderLectures() {
   const el = document.getElementById('lecturesList');
