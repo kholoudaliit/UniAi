@@ -61,6 +61,7 @@ input, select, textarea { font-family: var(--fn-ar); }
   background: var(--bg);
 }
 .screen.active { display: flex; }
+.hidden { display: none !important; }
 @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
 
 .screen-scroll {
@@ -299,10 +300,16 @@ input, select, textarea { font-family: var(--fn-ar); }
 .mate-chip { background: var(--card); border: 1px solid var(--border); border-radius: 20px; color: var(--txt2); padding: 7px 12px; font-size: 0.78rem; transition: all 0.2s; }
 .mate-chip:hover { border-color: var(--c2); color: var(--c1); }
 
-/* ===== Attendance ===== */
-.attend-role-tabs { display: flex; margin: 16px; background: var(--card); border-radius: var(--r3); padding: 4px; gap: 4px; }
-.arole { flex: 1; padding: 8px; border: none; background: transparent; color: var(--txt3); font-size: 0.85rem; border-radius: 6px; transition: all 0.2s; }
-.arole.active { background: linear-gradient(135deg,var(--c2),var(--c1)); color: white; }
+/* ===== Attendance Role Themes ===== */
+#screen-attend.mode-student { --accent-rgb: 0, 200, 150; }
+#screen-attend.mode-prof { --accent-rgb: 123, 47, 255; }
+#screen-attend.mode-student .nav-title::before { content: "✅ "; }
+#screen-attend.mode-prof .nav-title::before { content: "📊 "; }
+#screen-attend.mode-student #attendStatsBtn { display: none; }
+
+.attend-role-tabs { display: flex; margin: 16px; background: var(--card); border-radius: var(--r3); padding: 5px; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.arole { flex: 1; padding: 10px; border: none; background: transparent; color: var(--txt3); font-size: 0.88rem; font-weight: 600; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); cursor: pointer; }
+.arole.active { background: linear-gradient(135deg, rgb(var(--accent-rgb)), rgba(var(--accent-rgb), 0.7)); color: white; box-shadow: 0 6px 15px rgba(var(--accent-rgb), 0.3); }
 .today-lec-label { font-size: 0.8rem; font-weight: 600; color: var(--txt2); margin: 0 16px 10px; }
 .lectures-list { display: flex; flex-direction: column; gap: 8px; margin: 0 16px 16px; }
 .lec-item { background: var(--card); border: 1px solid var(--border); border-radius: var(--r2); padding: 12px; display: flex; align-items: center; gap: 12px; }
@@ -313,24 +320,42 @@ input, select, textarea { font-family: var(--fn-ar); }
 .lec-status { font-size: 0.72rem; padding: 3px 8px; border-radius: 10px; }
 .lec-status.done { background: rgba(0,200,150,0.15); color: var(--green); }
 .lec-status.active { background: rgba(255,71,87,0.15); color: var(--red); }
-.scan-card { margin: 16px; height: 160px; background: var(--card); border: 2px dashed var(--border2); border-radius: var(--r); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-.scan-pulse-ring { position: absolute; width: 120px; height: 120px; border: 2px solid rgba(0,212,255,0.3); border-radius: 50%; animation: scanPulse 2s ease-in-out infinite; }
+.scan-card { margin: 16px; height: 180px; background: var(--card); border: 2px dashed rgba(var(--accent-rgb), 0.3); border-radius: var(--r); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.4s; }
+.mode-student .scan-card { box-shadow: inset 0 0 40px rgba(0,200,150,0.05); }
+.scan-pulse-ring { position: absolute; width: 120px; height: 120px; border: 2px solid rgba(var(--accent-rgb), 0.3); border-radius: 50%; animation: scanPulse 2s ease-in-out infinite; }
 @keyframes scanPulse { 0%{transform:scale(0.8);opacity:1} 100%{transform:scale(1.4);opacity:0} }
 .scan-inner { text-align: center; position: relative; z-index: 1; }
-.scan-icon { font-size: 2rem; margin-bottom: 8px; }
-.scan-title { font-size: 0.9rem; font-weight: 600; color: var(--txt); }
-.scan-sub { font-size: 0.75rem; color: var(--txt3); margin-top: 4px; }
-.prof-attend-card { margin: 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
-.prof-course-select label { font-size: 0.8rem; color: var(--txt2); display: block; margin-bottom: 8px; }
+.scan-icon { font-size: 2.2rem; margin-bottom: 8px; transition: transform 0.3s; }
+.scan-card:active .scan-icon { transform: scale(0.9); }
+.scan-title { font-size: 0.95rem; font-weight: 700; color: var(--txt); }
+.scan-sub { font-size: 0.78rem; color: var(--txt3); margin-top: 4px; }
+.prof-attend-card { margin: 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
+.prof-course-select label { font-size: 0.82rem; font-weight: 600; color: var(--txt2); display: block; margin-bottom: 8px; }
 .qr-display { margin: 16px; }
 .qr-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; text-align: center; margin-bottom: 12px; }
-.qr-grid { width: 120px; height: 120px; background: white; border-radius: 8px; margin: 0 auto 12px; padding: 8px; display: grid; grid-template-columns: repeat(8,1fr); gap: 2px; }
-.qr-cell { border-radius: 1px; }
+.qr-grid { width: 140px; height: 140px; background: white; border-radius: 12px; margin: 0 auto 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
+.qr-cell { display: none; }
 .qr-code-label { font-size: 0.85rem; font-weight: 600; color: var(--txt); }
 .qr-timer { font-size: 0.8rem; color: var(--amber); margin-top: 6px; font-family: var(--fn-en); }
 .attend-stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
 .ast-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r2); padding: 14px; text-align: center; }
 .ast-val { font-size: 1.4rem; font-weight: 700; color: var(--c1); font-family: var(--fn-en); }
+.ast-lbl { font-size: 0.72rem; color: var(--txt3); text-transform: uppercase; margin-top: 2px; }
+
+/* Student Summary & Warning */
+.student-status-summary { margin: 16px; display: flex; flex-direction: column; gap: 12px; }
+.status-summary-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
+.ssc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.ssc-label { font-size: 0.82rem; font-weight: 600; color: var(--txt); }
+.ssc-val { font-size: 1.1rem; font-weight: 800; color: var(--green); font-family: var(--fn-en); }
+.ssc-bar-wrap { height: 6px; background: var(--card2); border-radius: 3px; overflow: hidden; }
+.ssc-bar-fill { height: 100%; background: linear-gradient(to right, var(--green), #B9FBC0); border-radius: 3px; }
+
+.dn-warning-card { background: rgba(255, 71, 87, 0.05); border: 1px solid rgba(255, 71, 87, 0.15); border-radius: var(--r); padding: 14px; display: flex; gap: 12px; align-items: flex-start; }
+.dwc-icon { font-size: 1.4rem; }
+.dwc-title { font-size: 0.85rem; font-weight: 700; color: var(--red); margin-bottom: 4px; }
+.dwc-text { font-size: 0.78rem; color: var(--txt2); line-height: 1.5; }
+.dwc-text strong { color: var(--txt); }
 .ast-lbl { font-size: 0.72rem; color: var(--txt3); margin-top: 4px; }
 
 /* ===== Vote ===== */

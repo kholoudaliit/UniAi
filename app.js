@@ -12,7 +12,7 @@ function updateClock() {
   const el = document.getElementById('statusTime');
   if (!el) return;
   const now = new Date();
-  el.textContent = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  el.textContent = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
 }
 
 function goTo(screenId) {
@@ -61,7 +61,7 @@ function initNavigation() {
 }
 
 // Toast
-window.showToast = function(msg) {
+window.showToast = function (msg) {
   const t = document.getElementById('toastNotif');
   if (!t) return;
   t.textContent = msg;
