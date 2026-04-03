@@ -48,6 +48,12 @@ const skills = [
   { name:'Database Design', pct:80 }, { name:'Algorithms', pct:88 },
 ];
 
+const projects = [
+  { name: 'نظام توصية الأغذية الذكي', tech: 'Python, ML, Flask', icon: '🍎' },
+  { name: 'محاكي شبكات الجامعة', tech: 'C++, NS3', icon: '🌐' },
+  { name: 'تطبيق مساعد المكفوفين', tech: 'Swift, Computer Vision', icon: '👓' },
+];
+
 function initGamify() {
   if (gamifyInited) return; gamifyInited = true;
   renderBadges(); renderEarnList(); renderLeaderboard(); renderRewards();
@@ -103,9 +109,69 @@ function renderRewards() {
 
 // ===== PROFILE =====
 function initProfile() {
-  if (profileInited) return; profileInited = true;
+  if (profileInited) return; 
+  profileInited = true;
   renderSkills();
+  renderProfileProjects();
+  renderProfileGamify();
   drawProgressChart();
+  initAddProjectLogic();
+}
+
+function renderProfileProjects() {
+  const el = document.getElementById('profileProjectsList');
+  if (!el) return;
+  el.innerHTML = projects.map(p => `
+    <div class="proj-card">
+      <div class="proj-icon">${p.icon}</div>
+      <div class="proj-info">
+        <div class="proj-name">${p.name}</div>
+        <div class="proj-tech">${p.tech}</div>
+        <div class="proj-meta">مرتبط بـ KAU Talent</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderProfileGamify() {
+  const ptsEl = document.getElementById('profilePoints');
+  const badgesEl = document.getElementById('profileBadgesSummary');
+  if (ptsEl) ptsEl.textContent = '2,840';
+  if (badgesEl) {
+    badgesEl.innerHTML = badges.filter(b => b.earned).slice(0, 6).map(b => `
+      <div class="mini-badge" title="${b.name}">${b.icon}</div>
+    `).join('');
+  }
+}
+
+function initAddProjectLogic() {
+  document.getElementById('addProjectBtn')?.addEventListener('click', () => {
+    window.openSheet('addProjectSheet');
+  });
+
+  document.getElementById('saveProjectBtn')?.addEventListener('click', () => {
+    const name = document.getElementById('projName').value;
+    const tech = document.getElementById('projTech').value;
+    
+    if (!name || !tech) {
+      window.showToast('⚠️ يرجى ملء البيانات الأساسية');
+      return;
+    }
+
+    // Add to local list
+    projects.unshift({ name, tech, icon: '🚀' });
+    renderProfileProjects();
+    
+    // Clear & Close
+    document.getElementById('projName').value = '';
+    document.getElementById('projTech').value = '';
+    document.getElementById('projDesc').value = '';
+    
+    window.closeSheet('addProjectSheet');
+    window.showToast('✅ تم إضافة المشروع وربطه بـ KAU Talent!');
+    
+    // Bonus points
+    window.showToast('🏆 حصلت على +50 نقطة لإضافة مشروع!');
+  });
 }
 
 function renderSkills() {

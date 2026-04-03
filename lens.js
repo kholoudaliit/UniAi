@@ -2,22 +2,22 @@
 let lensMap, lensInited = false;
 
 const lensAreas = [
-  { id:'lib', name:'المكتبة', emoji:'📚', lat:21.498, lng:39.247, score:82, crowd:'منخفض', count:45 },
-  { id:'cs', name:'كلية الحاسبات', emoji:'💻', lat:21.501, lng:39.252, score:91, crowd:'منخفض', count:112 },
-  { id:'eng', name:'كلية الهندسة', emoji:'⚙️', lat:21.495, lng:39.255, score:74, crowd:'متوسط', count:88 },
-  { id:'cafe', name:'الكافيتيريا', emoji:'🍽️', lat:21.499, lng:39.249, score:55, crowd:'عالٍ', count:200 },
-  { id:'clinic', name:'العيادة', emoji:'🏥', lat:21.502, lng:39.244, score:72, crowd:'منخفض', count:20 },
-  { id:'sports', name:'الملاعب', emoji:'⚽', lat:21.493, lng:39.250, score:88, crowd:'متوسط', count:65 },
-  { id:'admin', name:'الإدارة', emoji:'🏢', lat:21.500, lng:39.246, score:60, crowd:'متوسط', count:35 },
-  { id:'reg', name:'التسجيل', emoji:'📝', lat:21.497, lng:39.253, score:50, crowd:'عالٍ', count:90 },
+  { id: 'lib', name: 'المكتبة', emoji: '📚', lat: 21.498, lng: 39.247, score: 82, crowd: 'منخفض', count: 45 },
+  { id: 'cs', name: 'كلية الحاسبات', emoji: '💻', lat: 21.501, lng: 39.252, score: 91, crowd: 'منخفض', count: 112 },
+  { id: 'eng', name: 'كلية الهندسة', emoji: '⚙️', lat: 21.495, lng: 39.255, score: 74, crowd: 'متوسط', count: 88 },
+  { id: 'cafe', name: 'الكافيتيريا', emoji: '🍽️', lat: 21.499, lng: 39.249, score: 55, crowd: 'عالٍ', count: 200 },
+  { id: 'clinic', name: 'العيادة', emoji: '🏥', lat: 21.502, lng: 39.244, score: 72, crowd: 'منخفض', count: 20 },
+  { id: 'sports', name: 'الملاعب', emoji: '⚽', lat: 21.493, lng: 39.250, score: 88, crowd: 'متوسط', count: 65 },
+  { id: 'admin', name: 'الإدارة', emoji: '🏢', lat: 21.500, lng: 39.246, score: 60, crowd: 'متوسط', count: 35 },
+  { id: 'reg', name: 'التسجيل', emoji: '📝', lat: 21.497, lng: 39.253, score: 50, crowd: 'عالٍ', count: 90 },
 ];
 
 const lensFeed = [
-  { loc:'المكتبة', mood:'😄', text:'هادئة جداً اليوم، مناسبة للمذاكرة!', time:'منذ ٥ دقائق' },
-  { loc:'الكافيتيريا', mood:'😕', text:'ازدحام كبير وقت الغداء', time:'منذ ١٢ دقيقة' },
-  { loc:'كلية الحاسبات', mood:'😄', text:'بيئة رائعة وإنترنت سريع', time:'منذ ٢٠ دقيقة' },
-  { loc:'التسجيل', mood:'😢', text:'طابور طويل جداً، نحتاج نظام أفضل', time:'منذ ٣٥ دقيقة' },
-  { loc:'الملاعب', mood:'🙂', text:'الجو ممتاز للرياضة اليوم', time:'منذ ساعة' },
+  { loc: 'المكتبة', mood: '😄', text: 'هادئة جداً اليوم، مناسبة للمذاكرة!', time: 'منذ ٥ دقائق' },
+  { loc: 'الكافيتيريا', mood: '😕', text: 'ازدحام كبير وقت الغداء', time: 'منذ ١٢ دقيقة' },
+  { loc: 'كلية الحاسبات', mood: '😄', text: 'بيئة رائعة وإنترنت سريع', time: 'منذ ٢٠ دقيقة' },
+  { loc: 'التسجيل', mood: '😢', text: 'طابور طويل جداً، نحتاج نظام أفضل', time: 'منذ ٣٥ دقيقة' },
+  { loc: 'الملاعب', mood: '🙂', text: 'الجو ممتاز للرياضة اليوم', time: 'منذ ساعة' },
 ];
 
 function scoreColor(s) {
@@ -36,12 +36,12 @@ function initLens() {
 
   document.getElementById('lensSendBtn')?.addEventListener('click', submitLensMood);
   document.getElementById('lensPhotoBtn')?.addEventListener('click', () => showToast('📷 ميزة الصور قادمة قريباً!'));
-  
+
   // Initialize Draggable Sheet
   const dataSheet = document.getElementById('lensDataSheet');
   if (dataSheet) {
     initDraggableSheet('lensDataSheet', 'lensDataSheetHandle', { type: 'lens', threshold: -50 });
-    
+
     // Also expand when tapping the top visible area (optional but helpful)
     document.querySelector('.lens-data-sheet .location-row')?.addEventListener('click', () => {
       dataSheet.classList.add('expanded');
@@ -64,7 +64,7 @@ function initLens() {
     if (lensMap) { lensMap.invalidateSize(); return; }
     lensMap = L.map('lensMap', { zoomControl: false, attributionControl: false }).setView([21.499, 39.250], 15);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(lensMap);
-    
+
     // Auto heatmap layer
     if (typeof L.heatLayer !== 'undefined') {
       const heatPoints = lensAreas.map(a => [a.lat, a.lng, a.score * 15]);
@@ -72,7 +72,7 @@ function initLens() {
         radius: 40,
         blur: 25,
         maxZoom: 17,
-        gradient: {0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red'}
+        gradient: { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1.0: 'red' }
       }).addTo(lensMap);
     }
 
@@ -90,7 +90,7 @@ function addLensMarker(area) {
     </div>
     <div class="e-needle" style="background:${color}"></div>
   </div>`;
-  const icon = L.divIcon({ html, className: '', iconSize: [50,60], iconAnchor: [25,60] });
+  const icon = L.divIcon({ html, className: '', iconSize: [50, 60], iconAnchor: [25, 60] });
   const marker = L.marker([area.lat, area.lng], { icon }).addTo(lensMap);
   const popup = `<div class="lmap-popup">
     <div class="lmap-popup-title">${area.emoji} ${area.name}</div>

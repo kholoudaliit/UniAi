@@ -748,6 +748,7 @@
                 </div>
               </div>
             </div>
+            <div class="section-label">نبذة</div>
             <div class="profile-bio-card">
               <p>طالبة متميزة في علم الحاسب، شغوفة بالذكاء الاصطناعي وتحليل البيانات.</p>
             </div>
@@ -763,8 +764,23 @@
               </div>
             </div>
 
-            <div class="section-label">المهارات التقنية</div>
+            <div class="section-label">المهارات</div>
             <div class="skills-list" id="skillsList"></div>
+
+            <div class="section-header-row">
+              <div class="section-label">المشاريع</div>
+              <button class="btn-add-inline" id="addProjectBtn">+ إضافة مشروع</button>
+            </div>
+            <div class="projects-list" id="profileProjectsList"></div>
+
+            <div class="section-label">الأوسمة والنقاط (Gamification)</div>
+            <div class="profile-gamify-card">
+              <div class="pgc-points">
+                <span class="pgc-val" id="profilePoints">2,840</span>
+                <span class="pgc-lbl">نقطة مكتسبة</span>
+              </div>
+              <div class="pgc-badges" id="profileBadgesSummary"></div>
+            </div>
 
             <div style="height:20px"></div>
           </div>
@@ -794,6 +810,29 @@
             <span class="bn-lbl">Voice</span>
           </button>
         </nav>
+
+        <!-- ===== ADD PROJECT SHEET ===== -->
+        <div class="bottom-sheet hidden" id="addProjectSheet">
+          <div class="bs-handle-area">
+            <div class="bs-handle"></div>
+          </div>
+          <div class="bs-title">إضافة مشروع جديد</div>
+          <div class="bs-form">
+            <div class="form-group">
+              <label>اسم المشروع</label>
+              <input type="text" id="projName" placeholder="مثال: نظام إدارة البيانات" />
+            </div>
+            <div class="form-group">
+              <label>التقنيات المستخدمة</label>
+              <input type="text" id="projTech" placeholder="مثال: React, Node.js, Firebase" />
+            </div>
+            <div class="form-group">
+              <label>وصف مختصر</label>
+              <textarea id="projDesc" rows="2" placeholder="اشرح باختصار ماذا يفعل المشروع..."></textarea>
+            </div>
+            <button class="btn-submit" id="saveProjectBtn">🚀 حفظ المشروع في KAU Talent</button>
+          </div>
+        </div>
 
         <!-- Backdrop Overlay -->
         <div class="sheet-backdrop" id="sheetBackdrop"></div>
