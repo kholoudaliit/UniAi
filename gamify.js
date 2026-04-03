@@ -17,7 +17,7 @@ const badges = [
 ];
 
 const earnItems = [
-  { pts:'+10', text:'تسجيل شعورك في KAU Lens' },
+  { pts:'+10', text:'تسجيل شعورك في KAU E-Campus' },
   { pts:'+15', text:'تسجيل حضور محاضرة' },
   { pts:'+5', text:'المشاركة في تصويت' },
   { pts:'+5', text:'إرسال رسالة في الشات' },

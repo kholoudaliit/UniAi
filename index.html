@@ -43,12 +43,13 @@
             </div>
 
             <div class="splash-services">
-              <div class="service-pill"><span>🗺️</span> KAU Lens</div>
+              <div class="service-pill"><span>🗺️</span> KAU E-Campus</div>
               <div class="service-pill"><span>💬</span> KAU Chat</div>
               <div class="service-pill"><span>🤖</span> KAU MateAI</div>
-              <div class="service-pill"><span>✅</span> Smart Attendance</div>
+              <div class="service-pill"><span>✅</span> KAU Attendance</div>
               <div class="service-pill"><span>📢</span> KAU Voice</div>
               <div class="service-pill"><span>📅</span> KAU Calendar</div>
+              <div class="service-pill"><span>💼</span> KAU TalentHub</div>
               <div class="service-pill"><span>🏆</span> Gamification</div>
             </div>
 
@@ -128,7 +129,7 @@
                 <div class="svc-icon-wrap" style="--c1:#00D4FF;--c2:#0099FF">
                   <span class="svc-icon">🗺️</span>
                 </div>
-                <div class="svc-name">KAU Lens</div>
+                <div class="svc-name">KAU E-Campus</div>
                 <div class="svc-desc">الخريطة الذكية</div>
                 <span class="svc-live">مباشر</span>
               </button>
@@ -151,7 +152,7 @@
                 <div class="svc-icon-wrap" style="--c1:#00C896;--c2:#009966">
                   <span class="svc-icon">✅</span>
                 </div>
-                <div class="svc-name">Smart Attend</div>
+                <div class="svc-name">KAU Attendance</div>
                 <div class="svc-desc">التحضير الذاتي</div>
               </button>
               <button class="svc-card" data-nav="vote" id="svcVote">
@@ -229,7 +230,7 @@
           <div class="nav-bar lens-nav">
             <button class="back-btn" data-back="home">‹</button>
             <div class="nav-title">
-              <span>🗺️ KAU Lens</span>
+              <span>🗺️ KAU E-Campus</span>
               <span class="live-dot-label"><span class="ldot"></span>مباشر</span>
             </div>
           </div>
@@ -303,7 +304,7 @@
           <div class="screen-scroll" id="chatListView">
             <div class="chat-tabs">
               <button class="ctab active" data-ct="courses">مجموعات المواد</button>
-              <button class="ctab" data-ct="interests">الاهتمامات</button>
+              <button class="ctab" data-ct="interests">المجتمعات</button>
               <button class="ctab" data-ct="direct">المحادثات</button>
             </div>
             <div class="chat-search-wrap">
@@ -372,7 +373,7 @@
         <div class="screen mode-student" id="screen-attend">
           <div class="nav-bar">
             <button class="back-btn" data-back="home">‹</button>
-            <div class="nav-title">تحضيري</div>
+            <div class="nav-title">الحضور والغياب</div>
             <button class="nav-action" id="attendStatsBtn" title="سجل الحضور">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -462,6 +463,30 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Send QR via Email -->
+              <div class="qr-email-card">
+                <div class="qr-email-top">
+                  <div class="qr-email-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                  </div>
+                  <div class="qr-email-info">
+                    <div class="qr-email-title">إرسال الـ QR عبر البريد</div>
+                    <div class="qr-email-sub" id="profEmailDisplay">dr.ahmed@kau.edu.sa</div>
+                  </div>
+                  <button class="qr-email-send-btn" id="sendQrEmailBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="22" y1="2" x2="11" y2="13"/>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    إرسال
+                  </button>
+                </div>
+              </div>
+
             </div>
 
             <div style="height:20px"></div>
@@ -794,7 +819,7 @@
           </button>
           <button class="bn-item" data-nav="lens" id="bnLens">
             <span class="bn-icon">🗺️</span>
-            <span class="bn-lbl">KAU Lens</span>
+            <span class="bn-lbl">E-Campus</span>
           </button>
           <button class="bn-item" data-nav="chat" id="bnChat">
             <span class="bn-icon">💬</span>

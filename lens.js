@@ -1,4 +1,4 @@
-// ===== lens.js — KAU Lens (Interactive Map) =====
+// ===== lens.js — KAU E-Campus (Interactive Map) =====
 let lensMap, lensInited = false;
 
 const lensAreas = [

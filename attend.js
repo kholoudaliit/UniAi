@@ -1,4 +1,4 @@
-// ===== attend.js — Smart Attendance =====
+// ===== attend.js — KAU Attendance =====
 let attendInited = false, qrTimer = null, qrSeconds = 300;
 
 const lectures = [
@@ -72,7 +72,7 @@ function initAttend() {
         screen.classList.toggle('mode-student', !isProf);
         screen.classList.toggle('mode-prof', isProf);
         const title = screen.querySelector('.nav-title');
-        if (title) title.textContent = isProf ? 'بوابة الدكتور' : 'تحضيري';
+        if (title) title.textContent = isProf ? 'بوابة الدكتور' : 'الحضور والغياب';
       }
 
       document.getElementById('attendStudentView').classList.toggle('hidden', isProf);
@@ -99,6 +99,32 @@ function initAttend() {
   });
 
   renderHistoryCourses();
+
+  // Send QR via Email — email is pre-filled by system
+  document.getElementById('sendQrEmailBtn')?.addEventListener('click', () => {
+    const registeredEmail = document.getElementById('profEmailDisplay')?.textContent || 'dr.ahmed@kau.edu.sa';
+    const btn = document.getElementById('sendQrEmailBtn');
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      \u062a\u0645 \u0627\u0644\u0625\u0631\u0633\u0627\u0644
+    `;
+    btn.style.background = 'var(--green)';
+    showToast('\u2709\ufe0f \u062a\u0645 \u0625\u0631\u0633\u0627\u0644 \u0631\u0645\u0632 \u0627\u0644\u062d\u0636\u0648\u0631 \u0628\u0646\u062c\u0627\u062d \u0625\u0644\u0649 ' + registeredEmail);
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.style.background = '';
+      btn.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+        \u0625\u0631\u0633\u0627\u0644
+      `;
+    }, 3000);
+  });
 }
 
 function showHistoryScreen() {
