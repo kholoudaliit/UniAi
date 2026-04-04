@@ -16,6 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="style.css?v=2.1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
@@ -49,7 +50,7 @@
               <div class="service-pill"><span>✅</span> KAU Attendance</div>
               <div class="service-pill"><span>📢</span> KAU Voice</div>
               <div class="service-pill"><span>📅</span> KAU Calendar</div>
-              <div class="service-pill"><span>💼</span> KAU TalentHub</div>
+              <div class="service-pill"><span>💼</span> KAU Talent</div>
               <div class="service-pill"><span>🏆</span> Gamification</div>
             </div>
 
@@ -78,7 +79,10 @@
                 <h2 class="greeting-name">سارة الأحمدي</h2>
                 <p class="greeting-meta">علم الحاسب · المستوى السادس</p>
               </div>
-              <div class="home-avatar" id="homeAvatarBtn">س</div>
+              <div class="home-profile-trigger" id="homeAvatarBtn">
+                <div class="home-avatar">س</div>
+                <span class="home-profile-label">الملف الشخصي</span>
+              </div>
             </div>
 
             <!-- Points Banner -->
@@ -116,9 +120,9 @@
                 <div class="qs-lbl">الحضور</div>
               </div>
               <div class="qs-card" style="--a:#FFD93D">
-                <div class="qs-icon">📅</div>
+                <div class="qs-icon">💼</div>
                 <div class="qs-val">3</div>
-                <div class="qs-lbl">فعاليات</div>
+                <div class="qs-lbl">الوظائف</div>
               </div>
             </div>
 
@@ -168,7 +172,7 @@
                   <span class="svc-icon">📅</span>
                 </div>
                 <div class="svc-name">KAU Calendar</div>
-                <div class="svc-desc">الجدول الدراسي والفعاليات</div>
+                <div class="svc-desc">التقويم الجامعي والفعاليات</div>
               </button>
               <button class="svc-card" data-nav="gamify" id="svcGamify">
                 <div class="svc-icon-wrap" style="--c1:#FFD700;--c2:#FF8C00">
@@ -181,8 +185,8 @@
                 <div class="svc-icon-wrap" style="--c1:#00C896;--c2:#00D4FF">
                   <span class="svc-icon">💼</span>
                 </div>
-                <div class="svc-name">TalentHub</div>
-                <div class="svc-desc">فرص ومهن</div>
+                <div class="svc-name">KAU Talent</div>
+                <div class="svc-desc">فرص الجامعة الوظيفية</div>
               </button>
             </div>
 
@@ -239,32 +243,45 @@
             <div class="lens-map-area">
               <div id="lensMap"></div>
               <div class="map-filter-bar">
-                <button class="mfb active" data-lf="all">الكل</button>
-                <button class="mfb" data-lf="happy">😄 سعيد</button>
-                <button class="mfb" data-lf="sad">😢 متذمر</button>
-                <button class="mfb" data-lf="crowd">👥 ازدحام</button>
+                <button class="mfb" data-mode="all">🌍 الكل</button>
+                <button class="mfb active" data-mode="happy">✨ المشاعر</button>
+                <button class="mfb" data-mode="crowd">🔥 الازدحام</button>
+                <button class="mfb" data-mode="cafe">☕ المقاهي</button>
+                <button class="mfb" data-mode="food">🍔 المطاعم</button>
+                <button class="mfb" data-mode="study">📖 المذاكرة</button>
               </div>
             </div>
 
             <!-- Data Bottom Sheet (Partially Visible) -->
             <div class="lens-data-sheet" id="lensDataSheet">
-              <div class="bs-handle-area" id="lensDataSheetHandle">
-                <div class="bs-handle"></div>
+              <div class="lens-sheet-header" id="lensDataSheetHandle">
+                <div class="lens-sheet-pill"></div>
               </div>
               <div class="lens-ds-scroll">
                 <div class="lens-panel" style="padding: 0;">
-                  <div class="location-row" style="margin-bottom: 16px;">
-                    <div
-                      style="background: var(--card2); padding: 12px; border-radius: var(--r3); color: var(--txt); font-size: 0.85rem; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
-                      <span style="font-size: 1.2rem;">📍</span>
+
+                  <!-- Location -->
+                  <div class="location-row" style="margin-bottom:14px">
+                    <div style="background:var(--card2);padding:11px 12px;border-radius:var(--r3);border:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                      <span style="font-size:1.1rem">📍</span>
                       <div>
-                        <div style="color: var(--txt2); font-size: 0.75rem;">موقعك الحالي (تلقائي)</div>
-                        <strong>كلية الحاسبات</strong>
+                        <div style="color:var(--txt2);font-size:0.72rem">موقعك الحالي</div>
+                        <select id="lensLocation" style="background:transparent;border:none;color:var(--txt);font-size:0.85rem;font-weight:600;outline:none;padding:0;cursor:pointer;font-family:inherit;">
+                          <option value="cs">كلية الحاسبات</option>
+                          <option value="lib">المكتبة</option>
+                          <option value="eng">كلية الهندسة</option>
+                          <option value="cafe">الكافيتيريا</option>
+                          <option value="clinic">العيادة</option>
+                          <option value="sports">الملاعب</option>
+                          <option value="admin">الإدارة</option>
+                          <option value="reg">التسجيل</option>
+                        </select>
                       </div>
                     </div>
-                    <input type="hidden" id="lensLocation" value="cs" />
                   </div>
-                  <div class="lens-section-title">كيف تشعر اليوم؟</div>
+
+                  <!-- Micro Happiness Survey -->
+                  <div class="lens-section-title" id="lensMoodLabel">سجل شعورك ورضاك في (كلية الحاسبات)</div>
                   <div class="mood-row" id="lensMoodRow">
                     <button class="mood-btn" data-m="5">😄</button>
                     <button class="mood-btn" data-m="4">🙂</button>
@@ -272,18 +289,13 @@
                     <button class="mood-btn" data-m="2">😕</button>
                     <button class="mood-btn" data-m="1">😢</button>
                   </div>
-                  <textarea class="lens-textarea" id="lensComment" placeholder="أضف تعليقاً أو مقترحاً (اختياري)..."
-                    rows="2"></textarea>
-                  <div class="lens-action-row">
-                    <button class="action-chip" id="lensPhotoBtn">📷 صورة</button>
-                    <button class="btn-submit" id="lensSendBtn" style="margin-top:0; flex:1;">إرسال 💫</button>
-                  </div>
+                  <button class="btn-submit" id="lensSendBtn" style="margin:10px 0 20px;width:100%">إرسال الشعور 💫</button>
 
                   <!-- Heatmap Stats -->
-                  <div class="lens-section-title" style="margin-top:16px">📊 مناطق الجامعة</div>
+                  <div class="lens-section-title">📊 مناطق الجامعة</div>
                   <div class="hmap-bars" id="hmapBars"></div>
 
-                  <!-- Recent -->
+                  <!-- Recent Feed -->
                   <div class="lens-section-title" style="margin-top:16px">💬 آخر التعليقات</div>
                   <div class="lens-feed" id="lensFeed"></div>
                 </div>
@@ -719,7 +731,7 @@
         <div class="screen" id="screen-talent">
           <div class="nav-bar">
             <button class="back-btn" data-back="home">‹</button>
-            <div class="nav-title">💼 KAU TalentHub</div>
+            <div class="nav-title">💼 KAU Talent</div>
           </div>
           <div class="screen-scroll">
             <div class="talent-filter-bar">
@@ -756,7 +768,6 @@
           <div class="nav-bar">
             <button class="back-btn" data-back="home">‹</button>
             <div class="nav-title">👤 ملفي الشخصي</div>
-            <button class="nav-action">✏️</button>
           </div>
           <div class="screen-scroll">
             <div class="profile-hero">
@@ -772,6 +783,24 @@
                   <div class="phs-item"><strong>6</strong><span>مشاريع</span></div>
                 </div>
               </div>
+            </div>
+
+            <!-- Moved Gamification Card — PREMIUM PLACEMENT -->
+            <div class="profile-gamify-card" style="margin-top: -10px; border-radius: 0 0 20px 20px; border-top: none; background: linear-gradient(180deg, var(--card) 0%, rgba(123,47,255,0.05) 100%); margin-bottom: 16px;">
+              <div class="pgc-points">
+                <span class="pgc-val" id="profilePoints">2,840</span>
+                <span class="pgc-lbl">نقطة مكتسبة</span>
+              </div>
+              <div class="pgc-badges" id="profileBadgesSummary"></div>
+            </div>
+
+            <div class="resume-launch-card" id="openResumeBtn">
+              <div class="rlc-icon">📄</div>
+              <div class="rlc-body">
+                <div class="rlc-title">بناء السيرة الذاتية الذكية</div>
+                <div class="rlc-desc">تصدير بياناتك في ملف PDF</div>
+              </div>
+              <div class="rlc-arrow">›</div>
             </div>
             <div class="section-label">نبذة</div>
             <div class="profile-bio-card">
@@ -798,14 +827,33 @@
             </div>
             <div class="projects-list" id="profileProjectsList"></div>
 
-            <div class="section-label">الأوسمة والنقاط (Gamification)</div>
-            <div class="profile-gamify-card">
-              <div class="pgc-points">
-                <span class="pgc-val" id="profilePoints">2,840</span>
-                <span class="pgc-lbl">نقطة مكتسبة</span>
-              </div>
-              <div class="pgc-badges" id="profileBadgesSummary"></div>
+            <div class="section-header-row">
+              <div class="section-label">الخبرات العملية</div>
+              <button class="btn-add-inline" id="addExperienceBtn">+ إضافة خبرة</button>
             </div>
+            <div class="experiences-list" id="profileExperiencesList"></div>
+
+            <div class="section-label">المعلومات الأكاديمية</div>
+            <div class="academic-details-card">
+              <div class="adc-row">
+                <span class="adc-lbl">📧 البريد الجامعي</span>
+                <span class="adc-val" id="profileEmail">s.alahmadi@stu.kau.edu.sa</span>
+              </div>
+              <div class="adc-row">
+                <span class="adc-lbl">📞 رقم التواصل</span>
+                <span class="adc-val" id="profilePhone">+966 50 XXX XXXX</span>
+              </div>
+              <div class="adc-row">
+                <span class="adc-lbl">🏫 الكلية</span>
+                <span class="adc-val">كلية الحاسبات وتقنية المعلومات</span>
+              </div>
+              <div class="adc-row">
+                <span class="adc-lbl">📍 الحرم الجامعي</span>
+                <span class="adc-val">شطر الطالبات — السليمانية</span>
+              </div>
+            </div>
+
+
 
             <div style="height:20px"></div>
           </div>
@@ -838,9 +886,7 @@
 
         <!-- ===== ADD PROJECT SHEET ===== -->
         <div class="bottom-sheet hidden" id="addProjectSheet">
-          <div class="bs-handle-area">
-            <div class="bs-handle"></div>
-          </div>
+          <div class="bs-handle-area"><div class="bs-handle"></div></div>
           <div class="bs-title">إضافة مشروع جديد</div>
           <div class="bs-form">
             <div class="form-group">
@@ -855,9 +901,46 @@
               <label>وصف مختصر</label>
               <textarea id="projDesc" rows="2" placeholder="اشرح باختصار ماذا يفعل المشروع..."></textarea>
             </div>
-            <button class="btn-submit" id="saveProjectBtn">🚀 حفظ المشروع في KAU Talent</button>
+            <button class="btn-submit" id="saveProjectBtn">🚀 حفظ المشروع</button>
           </div>
         </div>
+
+        <!-- ADD EXPERIENCE SHEET -->
+        <div class="bottom-sheet hidden" id="addExperienceSheet">
+          <div class="bs-handle-area"><div class="bs-handle"></div></div>
+          <div class="bs-title">إضافة خبرة عملية</div>
+          <div class="bs-form">
+            <div class="form-group">
+              <label>المسمى الوظيفي / المهمة</label>
+              <input type="text" id="expTitle" placeholder="مثال: متدرب ذكاء اصطناعي" />
+            </div>
+            <div class="form-group">
+              <label>الجهة / الشركة</label>
+              <input type="text" id="expCompany" placeholder="مثال: مدينة الملك عبدالعزيز للعلوم والتقنية" />
+            </div>
+            <div class="form-group">
+              <label>الفترة</label>
+              <input type="text" id="expDate" placeholder="مثال: يونيو ٢٠٢٥ - أغسطس ٢٠٢٥" />
+            </div>
+            <button class="btn-submit" id="saveExperienceBtn">💾 حفظ الخبرة</button>
+          </div>
+        </div>
+
+        <!-- RESUME PREVIEW MODAL -->
+        <div class="bottom-sheet hidden" id="resumePreviewSheet">
+          <div class="bs-handle-area"><div class="bs-handle"></div></div>
+          <div class="bs-title">معاينة السيرة الذاتية</div>
+          <div class="resume-preview-scroll">
+            <div id="resumeDocument" class="resume-doc-v2">
+              <!-- Content Injected via JS -->
+            </div>
+          </div>
+          <div class="resume-actions">
+            <button class="btn-submit" id="downloadPdfBtn" style="margin:0; flex:1;">⬇️ تحميل بصيغة PDF</button>
+            <button class="btn-ghost" id="closeResumeBtn" style="flex:0.5;">إغلاق</button>
+          </div>
+        </div>
+
 
         <!-- Backdrop Overlay -->
         <div class="sheet-backdrop" id="sheetBackdrop"></div>

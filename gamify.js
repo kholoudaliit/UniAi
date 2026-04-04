@@ -54,6 +54,17 @@ const projects = [
   { name: 'تطبيق مساعد المكفوفين', tech: 'Swift, Computer Vision', icon: '👓' },
 ];
 
+const experiences = [
+  { title: 'متدربة في الأمن السيبراني', company: 'وحدة أمن المعلومات بالجامعة', date: 'يونيو ٢٠٢٥ - أغسطس ٢٠٢٥', icon: '🛡️' },
+  { title: 'مساعدة بحث وتطوير', company: 'كلية الحاسبات — مختبر AI', date: 'يناير ٢٠٢٤ - مايو ٢٠٢٤', icon: '🔬' },
+];
+
+const studentContact = {
+  email: 's.alahmadi@stu.kau.edu.sa',
+  phone: '+966 50 123 4567'
+};
+
+
 function initGamify() {
   if (gamifyInited) return; gamifyInited = true;
   renderBadges(); renderEarnList(); renderLeaderboard(); renderRewards();
@@ -113,10 +124,16 @@ function initProfile() {
   profileInited = true;
   renderSkills();
   renderProfileProjects();
+  renderExperiences();
+  renderAcademicDetails();
   renderProfileGamify();
   drawProgressChart();
   initAddProjectLogic();
+  initAddExperienceLogic();
+  initResumeBuilderLogic();
 }
+
+
 
 function renderProfileProjects() {
   const el = document.getElementById('profileProjectsList');
@@ -143,6 +160,14 @@ function renderProfileGamify() {
   }
 }
 
+function renderAcademicDetails() {
+  const emailEl = document.getElementById('profileEmail');
+  const phoneEl = document.getElementById('profilePhone');
+  if (emailEl) emailEl.textContent = studentContact.email;
+  if (phoneEl) phoneEl.textContent = studentContact.phone;
+}
+
+
 function initAddProjectLogic() {
   document.getElementById('addProjectBtn')?.addEventListener('click', () => {
     window.openSheet('addProjectSheet');
@@ -157,22 +182,160 @@ function initAddProjectLogic() {
       return;
     }
 
-    // Add to local list
     projects.unshift({ name, tech, icon: '🚀' });
     renderProfileProjects();
     
-    // Clear & Close
     document.getElementById('projName').value = '';
     document.getElementById('projTech').value = '';
     document.getElementById('projDesc').value = '';
     
     window.closeSheet('addProjectSheet');
-    window.showToast('✅ تم إضافة المشروع وربطه بـ KAU Talent!');
-    
-    // Bonus points
-    window.showToast('🏆 حصلت على +50 نقطة لإضافة مشروع!');
+    window.showToast('✅ تم إضافة المشروع!');
+    window.showToast('🏆 حصلت على +50 نقطة!');
   });
 }
+
+function renderExperiences() {
+  const el = document.getElementById('profileExperiencesList');
+  if (!el) return;
+  el.innerHTML = experiences.map(e => `
+    <div class="exp-card">
+      <div class="exp-icon">${e.icon}</div>
+      <div class="exp-info">
+        <div class="exp-title">${e.title}</div>
+        <div class="exp-company">${e.company}</div>
+        <div class="exp-date">${e.date}</div>
+      </div>
+    </div>`).join('');
+}
+
+function initAddExperienceLogic() {
+  document.getElementById('addExperienceBtn')?.addEventListener('click', () => {
+    window.openSheet('addExperienceSheet');
+  });
+
+  document.getElementById('saveExperienceBtn')?.addEventListener('click', () => {
+    const title = document.getElementById('expTitle').value;
+    const company = document.getElementById('expCompany').value;
+    const date = document.getElementById('expDate').value;
+    
+    if (!title || !company) {
+      window.showToast('⚠️ يرجى ملء البيانات الأساسية');
+      return;
+    }
+
+    experiences.unshift({ title, company, date, icon: '💼' });
+    renderExperiences();
+    
+    document.getElementById('expTitle').value = '';
+    document.getElementById('expCompany').value = '';
+    document.getElementById('expDate').value = '';
+    
+    window.closeSheet('addExperienceSheet');
+    window.showToast('✅ تم إضافة الخبرة!');
+  });
+}
+
+function initResumeBuilderLogic() {
+  document.getElementById('openResumeBtn')?.addEventListener('click', () => {
+    renderResumePreview();
+    window.openSheet('resumePreviewSheet');
+  });
+
+  document.getElementById('closeResumeBtn')?.addEventListener('click', () => {
+    window.closeSheet('resumePreviewSheet');
+  });
+
+  document.getElementById('downloadPdfBtn')?.addEventListener('click', () => {
+    exportResumeToPDF();
+  });
+}
+
+function renderResumePreview() {
+  const el = document.getElementById('resumeDocument');
+  if (!el) return;
+
+  const skillsHtml = skills.map(s => `<span class="res-skill-tag">${s.name}</span>`).join('');
+  const projectsHtml = projects.map(p => `
+    <div class="res-item">
+      <div class="res-item-header">
+        <span class="res-item-title">${p.name}</span>
+      </div>
+      <div class="res-item-org">${p.tech}</div>
+    </div>`).join('');
+  
+  const expHtml = experiences.map(e => `
+    <div class="res-item">
+      <div class="res-item-header">
+        <span class="res-item-title">${e.title}</span>
+        <span class="res-item-date">${e.date}</span>
+      </div>
+      <div class="res-item-org">${e.company}</div>
+    </div>`).join('');
+
+  el.innerHTML = `
+    <div class="res-header">
+      <h1>سارة أحمد الأحمدي</h1>
+      <p>طالبة علم حاسب ومعلومات — جامعة الملك عبدالعزيز</p>
+      <div class="res-contact">
+        <span>📧 ${studentContact.email}</span>
+        <span>📞 ${studentContact.phone}</span>
+        <span>📍 جدة، المملكة العربية السعودية</span>
+      </div>
+    </div>
+
+    <div class="res-section">
+      <div class="res-section-title">🎓 التعليم</div>
+      <div class="res-item">
+        <div class="res-item-header">
+          <span class="res-item-title">بكالوريوس علم الحاسب</span>
+          <span class="res-item-date">٢٠٢٢ - حالياً</span>
+        </div>
+        <div class="res-item-org">جامعة الملك عبدالعزيز</div>
+        <div class="res-item-desc">المعدل التراكمي: 3.8 / 4.0 (مرتبة الشرف)</div>
+      </div>
+    </div>
+
+    <div class="res-section">
+      <div class="res-section-title">💼 الخبرات العملية</div>
+      ${expHtml || '<p style="font-size:12px; color:#999">لا يوجد خبرات مضافة</p>'}
+    </div>
+
+    <div class="res-section">
+      <div class="res-section-title">🚀 المشاريع</div>
+      ${projectsHtml || '<p style="font-size:12px; color:#999">لا يوجد مشاريع مضافة</p>'}
+    </div>
+
+    <div class="res-section">
+      <div class="res-section-title">🛠️ المهارات التقنية</div>
+      <div class="res-skill-grid">${skillsHtml}</div>
+    </div>
+  `;
+}
+
+function exportResumeToPDF() {
+  const element = document.getElementById('resumeDocument');
+  if (!element) return;
+
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: 'KAU_Resume_Sara_Alahmadi.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  window.showToast('⏳ جاري إنشاء ملف PDF...');
+  
+  // Directly use html2pdf
+  html2pdf().set(opt).from(element).save().then(() => {
+    window.showToast('✅ تم تحميل السيرة الذاتية بنجاح!');
+  }).catch(err => {
+    console.error('PDF Error:', err);
+    window.showToast('❌ فشل تصدير PDF');
+  });
+}
+
 
 function renderSkills() {
   const el = document.getElementById('skillsList');
